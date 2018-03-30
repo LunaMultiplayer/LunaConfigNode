@@ -15,7 +15,7 @@
 
 *A config node parser for the [Luna multiplayer mod](https://github.com/LunaMultiplayer/LunaMultiplayer)*
 
-First of all the config node format **is worse in content, performance and features** than the standard XML specially since it lacks [XPath](https://en.wikipedia.org/wiki/XPath) support (and yes, [XPath](https://en.wikipedia.org/wiki/XPath) makes things **really** easy if you know what it is and spend 5 minutes learning them).  
+First of all the config node format **is worse in content, performance and features** than the standard XML specially since it lacks [XPath](https://en.wikipedia.org/wiki/XPath) support (and yes, [XPath](https://en.wikipedia.org/wiki/XPath) makes things **really** easy if you know what it is and spend 5 minutes learning about it).  
 
 Anyway, I created this dll to allow to parse and read a file/content in config node format from another software without having to use the KSP dll
 
