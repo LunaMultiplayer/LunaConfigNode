@@ -1,0 +1,11 @@
+*.user
+*.userprefs
+.idea/
+.vs/
+obj/
+LunaConfigNode/*.csproj.user
+LunaConfigNode/bin/*
+LunaConfigNode/obj/*
+LunaConfigNodeTest/*.csproj.user
+LunaConfigNodeTest/bin/*
+LunaConfigNodeTest/obj/*
