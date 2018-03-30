@@ -15,12 +15,16 @@
 
 *A config node parser for the [Luna multiplayer mod](https://github.com/LunaMultiplayer/LunaMultiplayer)*
 
-Although I consider the config node worse in content than XML I created this dll to allow to parse and  
-read a file/content in config node format from another software without having to use the KSP dll
+Although the config node format *is worse in content, performance and features* than the standard XML.  
+I created this dll to allow to parse and read a file/content in config node format from another software without having to use the KSP dll
 
 ---
 
-### Status: [![AppVeyor](https://img.shields.io/appveyor/ci/gavazquez/lunaconfignode/master.svg?logo=appveyor)](https://ci.appveyor.com/project/gavazquez/lunaconfignode/branch/master)
+### Status:
+
+|   Branch   |   Build  |   Tests  |
+| ---------- | -------- | -------- |
+| **master** |[![AppVeyor](https://img.shields.io/appveyor/ci/gavazquez/lunaconfignode/master.svg?logo=appveyor)](https://ci.appveyor.com/project/gavazquez/lunaconfignode/branch/master) | [![AppVeyor Tests](https://img.shields.io/appveyor/tests/gavazquez/lunaconfignode/master.svg?logo=appveyor)](https://ci.appveyor.com/project/gavazquez/lunaconfignode/branch/master/tests)
 
 ---
 
