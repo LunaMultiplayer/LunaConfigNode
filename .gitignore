@@ -3,6 +3,7 @@
 .idea/
 .vs/
 obj/
+TestResults/
 LunaConfigNode/*.csproj.user
 LunaConfigNode/bin/*
 LunaConfigNode/obj/*
