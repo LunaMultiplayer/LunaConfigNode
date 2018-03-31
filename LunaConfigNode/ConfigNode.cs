@@ -10,7 +10,7 @@ namespace LunaConfigNode
         public List<ConfigNode> Nodes { get; } = new List<ConfigNode>();
         public List<Value> Values { get; } = new List<Value>();
 
-        internal int Depth { get; set; }
+        internal int Depth => Parent.Depth + 1;
         internal ConfigNode Parent { get; set; }
 
         #region Constructor
@@ -25,7 +25,6 @@ namespace LunaConfigNode
         {
             Name = name;
             Parent = parent;
-            Depth = Parent.Depth + 1;
         }
 
         #endregion
