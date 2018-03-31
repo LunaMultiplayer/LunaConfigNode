@@ -8,6 +8,7 @@ namespace LunaConfigNode
         public string Name { get; set; }
         public string Val { get; private set; } = string.Empty;
         internal ConfigNode Parent { get; set; }
+        internal int Depth => Parent.Depth;
 
         #region Constructors
 
@@ -34,7 +35,7 @@ namespace LunaConfigNode
         public override string ToString()
         {
             var builder = new StringBuilder();
-            for (var i = 0; i < Parent.Depth; i++)
+            for (var i = 0; i < Depth; i++)
             {
                 builder.Append('\t');
             }

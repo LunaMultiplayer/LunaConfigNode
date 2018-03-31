@@ -10,7 +10,7 @@ namespace LunaConfigNode
         public List<ConfigNode> Nodes { get; } = new List<ConfigNode>();
         public List<Value> Values { get; } = new List<Value>();
 
-        internal int Depth => Parent.Depth + 1;
+        internal int Depth => Parent?.Depth + 1 ?? 0;
         internal ConfigNode Parent { get; set; }
 
         #region Constructor
@@ -71,15 +71,29 @@ namespace LunaConfigNode
 
         #region Navigate
 
-        public ConfigNode NavigateTo(params string[] xpath)
+        public bool TryGetValue(out Value value, params string[] xpath)
         {
-            if (Name == xpath[0] && xpath.Length == 1)
+            value = null;
+            if (xpath.Length == 2)
             {
-                return this;
+                value = Values.FirstOrDefault(v => v.Name == xpath[0]);
+                if (value != null)
+                {
+                    return value.Val == xpath.Last();
+                }
+                return false;
             }
 
-            var node = Nodes.FirstOrDefault(n => n.Name == xpath[0]);
-            return node?.NavigateTo(xpath.Skip(Depth + 1).ToArray());
+            var shortXpath = xpath.Skip(1).ToArray();
+            foreach (var node in Nodes)
+            {
+                if (node.TryGetValue(out value, shortXpath))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
