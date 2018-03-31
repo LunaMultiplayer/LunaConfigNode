@@ -11,12 +11,10 @@ namespace LunaConfigNodeTest
         public void TestReadFromContent()
         {
             var content = Reader.ReadFromContent(Resources.Vessel);
-
             Assert.IsNotNull(content);
 
             var contentAsString = content.ToString();
-
-
+            Assert.AreEqual(Resources.Vessel, contentAsString);
         }
     }
 }

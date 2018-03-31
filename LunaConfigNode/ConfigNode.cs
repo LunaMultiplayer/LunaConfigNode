@@ -15,10 +15,7 @@ namespace LunaConfigNode
 
         #region Constructor
 
-        public ConfigNode(string name)
-        {
-            Name = name;
-        }
+        public ConfigNode(string name) => Name = name;
 
         public ConfigNode()
         {
@@ -28,7 +25,7 @@ namespace LunaConfigNode
         {
             Name = name;
             Parent = parent;
-            Depth = Parent.Depth;
+            Depth = Parent.Depth + 1;
         }
 
         #endregion
@@ -75,17 +72,15 @@ namespace LunaConfigNode
 
         #region Navigate
 
-        public ConfigNode NavigateTo(string xpath)
+        public ConfigNode NavigateTo(params string[] xpath)
         {
-            var nodes = xpath.Split('/');
-
-            if (Name == nodes[0] && nodes.Length == 1)
+            if (Name == xpath[0] && xpath.Length == 1)
             {
                 return this;
             }
 
-            var node = Nodes.FirstOrDefault(n => n.Name == nodes[0]);
-            return node?.NavigateTo(string.Join("/", nodes.Skip(Depth + 1)));
+            var node = Nodes.FirstOrDefault(n => n.Name == xpath[0]);
+            return node?.NavigateTo(xpath.Skip(Depth + 1).ToArray());
         }
 
         #endregion
@@ -97,55 +92,62 @@ namespace LunaConfigNode
         public override string ToString()
         {
             var builder = new StringBuilder();
-            for (var i = 0; i < Depth; i++)
-            {
-                builder.Append('\t');
-            }
             if (Depth > 0)
             {
-                builder.AppendLine(Name);
+                builder.AppendLine(GetTabbedName());
                 builder.AppendLine(GetInitBracket());
             }
             foreach (var value in Values)
             {
                 builder.AppendLine(value.ToString());
             }
-            foreach (var node in Nodes)
+            for (var i = 0; i < Nodes.Count; i++)
             {
-                builder.AppendLine(node.ToString());
+                builder.AppendLine(Nodes[i].ToString());
             }
             if (Depth > 0)
             {
                 builder.AppendLine(GetEndBracket());
             }
-            return builder.ToString();
+            return builder.ToString().TrimEnd();
         }
 
         #endregion
 
         #region Private helpers
 
+        private string GetTabbedName()
+        {
+            var builder = new StringBuilder();
+            for (var i = 1; i < Depth; i++)
+            {
+                builder.Append('\t');
+            }
+            builder.Append(Name);
+            return builder.ToString();
+        }
+
         private string GetInitBracket()
         {
             var builder = new StringBuilder();
-            for (var i = 0; i < Depth; i++)
+            for (var i = 1; i < Depth; i++)
             {
                 builder.Append('\t');
             }
 
-            builder.AppendLine("{");
+            builder.Append("{");
             return builder.ToString();
         }
 
         private string GetEndBracket()
         {
             var builder = new StringBuilder();
-            for (var i = 0; i < Depth; i++)
+            for (var i = 1; i < Depth; i++)
             {
                 builder.Append('\t');
             }
 
-            builder.AppendLine("}");
+            builder.Append("}");
             return builder.ToString();
         }
 
