@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace LunaConfigNode
 {
@@ -13,18 +14,19 @@ namespace LunaConfigNode
                 string line;
                 while ((line = reader.ReadLine()?.Trim()) != null)
                 {
-                    if (line.Contains(" ="))
+                    if (line.Contains(" = "))
                     {
-                        var splitVal = line.Split('=');
-                        currentNode.AddValue(splitVal[0].Trim(), splitVal.Length > 1 ? splitVal[1].Trim() : string.Empty);
+                        currentNode.AddValue(line.Substring(0, line.IndexOf(" ", StringComparison.Ordinal)).Trim(), 
+                            line.Substring(line.LastIndexOf(" ", StringComparison.Ordinal)).Trim());
+
                         continue;
                     }
-                    if (line.Contains("{") && line.Length == 1)
+                    if (line.Equals("{"))
                     {
                         currentNode = currentNode.AddNode(previousLine);
                         continue;
                     }
-                    if (line.Contains("}") && line.Length == 1)
+                    if (line.Equals("}"))
                     {
                         currentNode = currentNode.Parent;
                         continue;

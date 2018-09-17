@@ -7,11 +7,17 @@ namespace LunaConfigNode
     public class ConfigNode
     {
         public string Name { get; set; } = string.Empty;
-        public List<ConfigNode> Nodes { get; } = new List<ConfigNode>();
-        public List<Value> Values { get; } = new List<Value>();
+        public ConfigNode Parent { get; set; }
 
-        internal int Depth => Parent?.Depth + 1 ?? 0;
-        internal ConfigNode Parent { get; set; }
+        private bool _useDictionaryForValues = true;
+        private Dictionary<string, string> ValueDict { get; } = new Dictionary<string, string>();
+        private List<KeyValuePair<string,string>> ValueList { get; } = new List<KeyValuePair<string, string>>();
+
+        private bool _useDictionaryForNodes = true;
+        private Dictionary<string, ConfigNode> NodeDict { get; } = new Dictionary<string, ConfigNode>();
+        private List<ConfigNode> NodeList { get; } = new List<ConfigNode>();
+
+        private int Depth => Parent?.Depth + 1 ?? 0;
 
         #region Constructor
 
@@ -33,17 +39,51 @@ namespace LunaConfigNode
 
         #region Add
 
-        public Value AddValue(string name, dynamic value)
+        public void AddValue(string name, string value)
         {
-            var newValue = new Value(name, value, this);
-            Values.Add(newValue);
-            return newValue;
+            if (_useDictionaryForValues)
+            {
+                if (ValueDict.ContainsKey(name))
+                {
+                    _useDictionaryForValues = false;
+                    ValueList.AddRange(ValueDict);
+                    ValueList.Add(new KeyValuePair<string, string>(name, value));
+                    ValueDict.Clear();
+                }
+                else
+                {
+                    ValueDict.Add(name, value);
+                }
+            }
+            else
+            {
+                ValueList.Add(new KeyValuePair<string, string>(name, value));
+            }
         }
 
         public ConfigNode AddNode(string name)
         {
             var newConfigNode = new ConfigNode(name, this);
-            Nodes.Add(newConfigNode);
+
+            if (_useDictionaryForNodes)
+            {
+                if (NodeDict.ContainsKey(name))
+                {
+                    _useDictionaryForNodes = false;
+                    NodeList.AddRange(NodeDict.Values);
+                    NodeList.Add(newConfigNode);
+                    NodeDict.Clear();
+                }
+                else
+                {
+                    NodeDict.Add(name, newConfigNode);
+                }
+            }
+            else
+            {
+                NodeList.Add(newConfigNode);
+            }
+
             return newConfigNode;
         }
 
@@ -51,49 +91,122 @@ namespace LunaConfigNode
 
         #region Remove
 
-        public void RemoveValue(Value value)
+        public void RemoveValue(string name)
         {
-            Values.Remove(value);
+            if (_useDictionaryForValues)
+            {
+                ValueDict.Remove(name);
+            }
+            else
+            {
+                ValueList.RemoveAll(v => v.Key == name);
+            }
         }
 
-        public void RemoveValues(params Value[] values)
+        public ConfigNode RemoveNode(string name)
         {
-            foreach(var val in values)
-                Values.Remove(val);
-        }
+            var newConfigNode = new ConfigNode(name, this);
 
-        public void RemoveValue(int index)
-        {
-            Values.RemoveAt(index);
+            if (_useDictionaryForNodes)
+            {
+                NodeDict.Remove(name);
+            }
+            else
+            {
+                NodeList.RemoveAll(c=> c.Name == name);
+            }
+
+            return newConfigNode;
         }
 
         #endregion
 
         #region Navigate
 
-        public bool TryGetValue(out Value value, params string[] xpath)
+        public string GetValue(string name)
         {
-            value = null;
-            if (xpath.Length == 2)
+            if (_useDictionaryForValues && ValueDict.TryGetValue(name, out var value))
             {
-                value = Values.FirstOrDefault(v => v.Name == xpath[0]);
-                if (value != null)
-                {
-                    return value.Val == xpath.Last();
-                }
-                return false;
+                return value;
             }
 
-            var shortXpath = xpath.Skip(1).ToArray();
-            foreach (var node in Nodes)
+            var keyVal = ValueList.FirstOrDefault(v => v.Key == name);
+            return keyVal.Value;
+        }
+
+        public List<ConfigNode> GetNodes(string nodeName)
+        {
+            var nodes = new List<ConfigNode>();
+            if (_useDictionaryForNodes)
             {
-                if (node.TryGetValue(out value, shortXpath))
+                if (NodeDict.TryGetValue(nodeName, out var foundNode))
+                    nodes.Add(foundNode);
+            }
+            else
+            {
+                nodes.AddRange(NodeList.Where(n => n.Name == nodeName));
+            }
+
+            return nodes;
+        }
+
+        public bool Navigate(out ConfigNode node, params string[] xpath)
+        {
+            node = null;
+            if (xpath.Length == 2)
+            {
+                if (TryGetValue(xpath[0], out var value) && value == xpath[1])
                 {
+                    node = this;
                     return true;
                 }
             }
 
+            if (_useDictionaryForNodes)
+            {
+                if (NodeDict.TryGetValue(xpath[0], out var foundNode))
+                    return foundNode.Navigate(out node, xpath.Skip(1).ToArray());
+            }
+            else
+            {
+                foreach (var possibleNode in NodeList.Where(n => n.Name == xpath[0]))
+                {
+                    if (possibleNode.Navigate(out node, xpath.Skip(1).ToArray()))
+                        return true;
+                }
+            }
+
             return false;
+        }
+
+        public bool TryGetValue(string name, out string value)
+        {
+            value = null;
+            if (_useDictionaryForValues)
+            {
+                return ValueDict.TryGetValue(name, out value);
+            }
+
+            var keyVal = ValueList.FirstOrDefault(v => v.Key == name);
+            value = keyVal.Value;
+
+            return keyVal.Key == name;
+        }
+
+        public bool TryGetNodes(string nodeName, out List<ConfigNode> nodes )
+        {
+            nodes = new List<ConfigNode>();
+            if (_useDictionaryForNodes)
+            {
+                if (NodeDict.TryGetValue(nodeName, out var foundNode))
+                    nodes.Add(foundNode);
+            }
+            else
+            {
+                nodes.AddRange(NodeList.Where(n => n.Name == nodeName));
+            }
+
+            return nodes.Any();
         }
 
         #endregion
@@ -110,13 +223,35 @@ namespace LunaConfigNode
                 builder.AppendLine(GetTabbedName());
                 builder.AppendLine(GetInitBracket());
             }
-            foreach (var value in Values)
+
+            if (_useDictionaryForValues)
             {
-                builder.AppendLine(value.ToString());
+                foreach (var valueDictValue in ValueDict.Values)
+                {
+                    builder.AppendLine(valueDictValue);
+                }
             }
-            for (var i = 0; i < Nodes.Count; i++)
+            else
             {
-                builder.AppendLine(Nodes[i].ToString());
+                foreach (var value in ValueList)
+                {
+                    builder.AppendLine(value.ToString());
+                }
+            }
+
+            if (_useDictionaryForNodes)
+            {
+                foreach (var nodeDictValue in NodeDict.Values)
+                {
+                    builder.AppendLine(nodeDictValue.ToString());
+                }
+            }
+            else
+            {
+                for (var i = 0; i < NodeList.Count; i++)
+                {
+                    builder.AppendLine(NodeList[i].ToString());
+                }
             }
             if (Depth > 0)
             {
