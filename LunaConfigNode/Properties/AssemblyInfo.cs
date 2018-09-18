@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Luna ConfigNode Handler")]
-[assembly: AssemblyDescription("Luna ConfigNode Handler")]
+[assembly: AssemblyDescription("Manage KSP config node files")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LunaConfigNode")]
+[assembly: AssemblyCompany("Gabriel Vazquez")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
-[assembly: AssemblyTrademark("Gabriel Vazquez")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]

@@ -15,6 +15,8 @@ image: Visual Studio 2017
 
 environment:
   smallversion: 1.0.0
+  NugetKey:
+    secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -37,6 +39,7 @@ after_build:
 #ClientUpdater post build commands
  - ps: mkdir "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
  - ps: xcopy /s/y "$env:appveyor_build_folder\LunaConfigNode\bin\$env:configuration\*.*" "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
+ - ps: nuget pack $env:appveyor_build_folder\LunaConfigNode\LunaConfigNode.nuspec
  #7zip everything
  - ps: 7z a "$env:appveyor_build_folder\LunaConfigNode-$env:configuration.zip" "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
 #---------------------------------#
@@ -62,3 +65,11 @@ deploy:
    force_update: true
    on:
     branch: master
+
+ - provider: NuGet
+   server: #NuGet.org
+   api_key:
+    secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
+   skip_symbols: false
+   symbol_server: #SymbolSource.org
+   artifact: /.*\.nupkg/

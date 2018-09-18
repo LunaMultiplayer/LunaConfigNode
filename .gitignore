@@ -10,3 +10,4 @@ LunaConfigNode/obj/*
 LunaConfigNodeTest/*.csproj.user
 LunaConfigNodeTest/bin/*
 LunaConfigNodeTest/obj/*
+*.nupkg
