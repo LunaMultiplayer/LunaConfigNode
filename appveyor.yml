@@ -6,7 +6,13 @@
 #      general configuration      #
 #---------------------------------#
 
-version: 1.0.0.{build}
+version: $(smallversion).{build}
+#Do not build if we change any of this files
+skip_commits:
+  files:
+    - '**/*.md'
+    - '**/*.editorconfig'
+    - '**/*.png'
 image: Visual Studio 2017
 
 #---------------------------------#
@@ -17,6 +23,8 @@ environment:
   smallversion: 1.0.0
   NugetKey:
     secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
+cache:
+  - packages -> **\packages.config
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
