@@ -4,6 +4,7 @@
 </p>
 
 <p align="center">
+  <a href="https://img.shields.io/nuget/v/LunaConfigNode.svg"><img src="https://img.shields.io/github/release/lunamultiplayer/lunaconfignode.svg" alt="Nuget" /></a>
   <a href="../../releases"><img src="https://img.shields.io/github/release/lunamultiplayer/lunaconfignode.svg" alt="Latest release" /></a>
   <a href="../../releases"><img src="https://img.shields.io/github/downloads/lunamultiplayer/lunaconfignode/total.svg" alt="Total downloads" /></a>
   <a href="../../"><img src="https://img.shields.io/github/search/lunamultiplayer/lunaconfignode/goto.svg" alt="Total hits" /></a>
