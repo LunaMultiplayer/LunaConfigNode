@@ -35,11 +35,11 @@ platform: Any CPU
 build:
   parallel: true
   verbosity: minimal
+  publish_nuget: true
 after_build:
 #ClientUpdater post build commands
  - ps: mkdir "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
  - ps: xcopy /s/y "$env:appveyor_build_folder\LunaConfigNode\bin\$env:configuration\*.*" "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
- - ps: nuget pack $env:appveyor_build_folder\LunaConfigNode\LunaConfigNode.nuspec
  #7zip everything
  - ps: 7z a "$env:appveyor_build_folder\LunaConfigNode-$env:configuration.zip" "$env:appveyor_build_folder\FinalFiles\$env:configuration\LunaConfigNode"
 #---------------------------------#
