@@ -35,5 +35,15 @@ namespace LunaConfigNodeTest
 
             Assert.AreEqual(0, configNode.GetNodes("Node1").Count);
         }
+
+        [TestMethod]
+        public void TestRemoveOneOfSeveralNodes()
+        {
+            var configNode = new ConfigNode(Resources.Simple);
+            var subNode = configNode.GetNodes("RepeatedNode3")[0];
+            configNode.RemoveNode(subNode);
+
+            Assert.AreEqual(1, configNode.GetNodes("RepeatedNode3").Count);
+        }
     }
 }
