@@ -16,8 +16,9 @@
 
 *A config node parser for the [Luna multiplayer mod](https://github.com/LunaMultiplayer/LunaMultiplayer)*
 
-I created this dll to allow to parse and read a file/content in config node format from another software without having to use the KSP dll
-It has a better performance in some cases as it uses a dictionary instead of lists to store values and subnodes whenever is possible
+I created this dll to allow to parse and read a file/content in config node format from another software without having to use the KSP dll  
+
+It has a better performance in some cases as it uses dictionaries instead of lists to store values and subnodes whenever is possible. Also, it uses a string builder to serialize it back to a string
 
 ---
 
