@@ -36,12 +36,12 @@ namespace LunaConfigNode
         /// </summary>
         public string GetValue(string name)
         {
-            if (_useDictionaryForValues && ValueDict.TryGetValue(name, out var value))
+            if (_useDictionaryForValues)
             {
-                return value;
+                if (ValueDict.TryGetValue(name, out var value))
+                    return value;
             }
-
-            if (ValueList.Any(v => v.Key == name))
+            else if (ValueList.Any(v => v.Key == name))
             {
                 return ValueList.FirstOrDefault(v => v.Key == name).Value;
             }

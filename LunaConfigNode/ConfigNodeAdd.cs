@@ -14,9 +14,8 @@ namespace LunaConfigNode
                 if (ValueDict.ContainsKey(name))
                 {
                     _useDictionaryForValues = false;
-                    ValueList.AddRange(ValueDict);
-                    ValueList.Add(new KeyValuePair<string, string>(name, value));
-                    ValueDict.Clear();
+                    ValueList = new List<KeyValuePair<string, string>>(ValueDict) { new KeyValuePair<string, string>(name, value) };
+                    ValueDict = null;
                 }
                 else
                 {
@@ -41,9 +40,8 @@ namespace LunaConfigNode
                 if (NodeDict.ContainsKey(name))
                 {
                     _useDictionaryForNodes = false;
-                    NodeList.AddRange(NodeDict.Values);
-                    NodeList.Add(newConfigNode);
-                    NodeDict.Clear();
+                    NodeList = new List<ConfigNode>(NodeDict.Values) { newConfigNode };
+                    NodeDict = null;
                 }
                 else
                 {

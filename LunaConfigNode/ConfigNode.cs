@@ -8,17 +8,19 @@ namespace LunaConfigNode
     public partial class ConfigNode
     {
         private const string ValueSeparator = " = ";
+        private const string OpenNodeSymbol = "{";
+        private const string CloseNodeSymbol = "}";
 
         public string Name { get; set; } = string.Empty;
         public ConfigNode Parent { get; set; }
 
         private bool _useDictionaryForValues = true;
-        private Dictionary<string, string> ValueDict { get; } = new Dictionary<string, string>();
-        private List<KeyValuePair<string,string>> ValueList { get; } = new List<KeyValuePair<string, string>>();
+        private Dictionary<string, string> ValueDict { get; set; } = new Dictionary<string, string>();
+        private List<KeyValuePair<string,string>> ValueList { get; set; }
 
         private bool _useDictionaryForNodes = true;
-        private Dictionary<string, ConfigNode> NodeDict { get; } = new Dictionary<string, ConfigNode>();
-        private List<ConfigNode> NodeList { get; } = new List<ConfigNode>();
+        private Dictionary<string, ConfigNode> NodeDict { get; set; } = new Dictionary<string, ConfigNode>();
+        private List<ConfigNode> NodeList { get; set; }
 
         private int Depth => Parent?.Depth + 1 ?? 0;
 
@@ -37,19 +39,19 @@ namespace LunaConfigNode
                 string line;
                 while ((line = reader.ReadLine()?.TrimStart()) != null)
                 {
-                    if (line.Contains(" = "))
+                    if (line.Contains(ValueSeparator))
                     {
                         currentNode.AddValue(line.Substring(0, line.IndexOf(ValueSeparator, StringComparison.Ordinal)).Trim(),
                             line.Substring(line.LastIndexOf(ValueSeparator, StringComparison.Ordinal) + ValueSeparator.Length).Trim());
 
                         continue;
                     }
-                    if (line.Equals("{"))
+                    if (line.Equals(OpenNodeSymbol))
                     {
                         currentNode = currentNode.AddNode(previousLine);
                         continue;
                     }
-                    if (line.Equals("}"))
+                    if (line.Equals(CloseNodeSymbol))
                     {
                         currentNode = currentNode.Parent;
                         continue;
@@ -144,13 +146,13 @@ namespace LunaConfigNode
             GetNodeTabbing(builder);
             builder.AppendLine(Name);
             GetNodeTabbing(builder);
-            builder.AppendLine("{");
+            builder.AppendLine(OpenNodeSymbol);
         }
 
         private void FinishNode(StringBuilder builder)
         {
             GetNodeTabbing(builder);
-            builder.Append("}");
+            builder.Append(CloseNodeSymbol);
         }
 
         #endregion
