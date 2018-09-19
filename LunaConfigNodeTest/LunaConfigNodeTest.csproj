@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdateTests.cs" />
     <Compile Include="GetTests.cs" />
     <Compile Include="RemoveTests.cs" />
     <Compile Include="SerializationTest.cs" />
