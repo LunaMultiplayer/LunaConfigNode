@@ -1,4 +1,5 @@
-﻿using LunaConfigNode;
+﻿using System;
+using LunaConfigNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +14,8 @@ namespace LunaConfigNodeTest
             var content = new ConfigNode(Resources.Vessel);
             var contentAsString = content.ToString();
 
-            Assert.AreEqual(Resources.Vessel, contentAsString);
+            var areEqual = string.Equals(Resources.Vessel, contentAsString, StringComparison.Ordinal);
+            Assert.IsTrue(areEqual);
         }
     }
 }
