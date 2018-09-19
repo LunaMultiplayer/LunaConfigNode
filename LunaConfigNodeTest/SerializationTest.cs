@@ -1,7 +1,7 @@
-﻿using System;
-using LunaConfigNode;
+﻿using LunaConfigNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace LunaConfigNodeTest
 {
@@ -11,10 +11,12 @@ namespace LunaConfigNodeTest
         [TestMethod]
         public void TestWriteConfigNode()
         {
-            var content = new ConfigNode(Resources.Vessel);
-            var contentAsString = content.ToString();
+            var asUnixStr = Resources.Vessel.Replace(Environment.NewLine, "\n");
 
-            var areEqual = string.Equals(Resources.Vessel, contentAsString, StringComparison.Ordinal);
+            var content = new ConfigNode(asUnixStr);
+            var contentAsString = content.ToString().Replace(Environment.NewLine, "\n");
+            
+            var areEqual = string.Equals(asUnixStr, contentAsString, StringComparison.Ordinal);
             Assert.IsTrue(areEqual);
         }
     }
