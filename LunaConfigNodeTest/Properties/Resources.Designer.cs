@@ -61,6 +61,41 @@ namespace LunaConfigNodeTest.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to field1 = field1Val
+        ///field2 = field2Val
+        ///field3 = field3Val
+        ///Node1
+        ///{
+        ///    field11 = field11Val
+        ///    field12 = field12Val
+        ///    field13 = field13Val
+        ///    Node11
+        ///    {
+        ///        field111 = field111Val
+        ///        field112 = field112Val
+        ///        field113 = field113Val
+        ///    }
+        ///    Node12
+        ///    {
+        ///        field121 = field12Val
+        ///        field122 = field122Val
+        ///        field123 = field123Val
+        ///    }
+        ///}
+        ///Node2
+        ///{
+        ///    field21 = field21Val
+        ///    field22 = field22Val
+        ///    field23 = field23Val
+        ///}.
+        /// </summary>
+        internal static string Simple {
+            get {
+                return ResourceManager.GetString("Simple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pid = a171d2853c324b1cbc5dce2463e87a0d
         ///name = Heavyn one
         ///type = Ship

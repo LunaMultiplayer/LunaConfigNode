@@ -1,0 +1,39 @@
+field1 = field1Val
+field2 = field2Val
+field3 = field3Val
+Node1
+{
+	field11 = field11Val
+	field12 = field12Val
+	field13 = field13Val
+	Node11
+	{
+		field111 = field111Val
+		field112 = field112Val
+		field113 = field113Val
+	}
+	Node12
+	{
+		field121 = field121Val
+		field122 = field122Val
+		field123 = field123Val
+	}
+}
+Node2
+{
+	field21 = field21Val
+	field22 = field22Val
+	field23 = field23Val
+}
+RepeatedNode3
+{
+	field31 = field31Val
+	field32 = field32Val
+	field33 = field33Val
+}
+RepeatedNode3
+{
+	field31 = field31Val
+	field32 = field32Val
+	field33 = field33Val
+}

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LunaConfigNode</RootNamespace>
     <AssemblyName>LunaConfigNode</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNode.cs" />
+    <Compile Include="ConfigNodeGetter.cs" />
+    <Compile Include="ConfigNodeRemove.cs" />
+    <Compile Include="ConfigNodeAdd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

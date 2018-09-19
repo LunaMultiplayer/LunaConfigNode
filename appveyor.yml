@@ -74,10 +74,10 @@ deploy:
    on:
     branch: master
 
- - provider: NuGet
-   server: #NuGet.org
-   api_key:
-    secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
-   skip_symbols: false
-   symbol_server: #SymbolSource.org
-   artifact: /.*\.nupkg/
+ - #provider: NuGet
+   #server: #NuGet.org
+   #api_key:
+   # secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
+   #skip_symbols: false
+   #symbol_server: #SymbolSource.org
+   #artifact: /.*\.nupkg/

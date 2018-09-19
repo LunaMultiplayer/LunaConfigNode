@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace LunaConfigNode
 {
-    public class ConfigNode
+    public partial class ConfigNode
     {
+        private const string ValueSeparator = " = ";
+
         public string Name { get; set; } = string.Empty;
         public ConfigNode Parent { get; set; }
 
@@ -21,10 +24,39 @@ namespace LunaConfigNode
 
         #region Constructor
 
-        public ConfigNode(string name) => Name = name;
-
         public ConfigNode()
         {
+        }
+
+        public ConfigNode(string contents)
+        {
+            var currentNode = this;
+            using (var reader = new StringReader(contents))
+            {
+                var previousLine = string.Empty;
+                string line;
+                while ((line = reader.ReadLine()?.TrimStart()) != null)
+                {
+                    if (line.Contains(" = "))
+                    {
+                        currentNode.AddValue(line.Substring(0, line.IndexOf(ValueSeparator, StringComparison.Ordinal)).Trim(),
+                            line.Substring(line.LastIndexOf(ValueSeparator, StringComparison.Ordinal) + ValueSeparator.Length).Trim());
+
+                        continue;
+                    }
+                    if (line.Equals("{"))
+                    {
+                        currentNode = currentNode.AddNode(previousLine);
+                        continue;
+                    }
+                    if (line.Equals("}"))
+                    {
+                        currentNode = currentNode.Parent;
+                        continue;
+                    }
+                    previousLine = line;
+                }
+            }
         }
 
         internal ConfigNode(string name, ConfigNode parent)
@@ -34,208 +66,35 @@ namespace LunaConfigNode
         }
 
         #endregion
-
-        #region Public
-
-        #region Add
-
-        public void AddValue(string name, string value)
-        {
-            if (_useDictionaryForValues)
-            {
-                if (ValueDict.ContainsKey(name))
-                {
-                    _useDictionaryForValues = false;
-                    ValueList.AddRange(ValueDict);
-                    ValueList.Add(new KeyValuePair<string, string>(name, value));
-                    ValueDict.Clear();
-                }
-                else
-                {
-                    ValueDict.Add(name, value);
-                }
-            }
-            else
-            {
-                ValueList.Add(new KeyValuePair<string, string>(name, value));
-            }
-        }
-
-        public ConfigNode AddNode(string name)
-        {
-            var newConfigNode = new ConfigNode(name, this);
-
-            if (_useDictionaryForNodes)
-            {
-                if (NodeDict.ContainsKey(name))
-                {
-                    _useDictionaryForNodes = false;
-                    NodeList.AddRange(NodeDict.Values);
-                    NodeList.Add(newConfigNode);
-                    NodeDict.Clear();
-                }
-                else
-                {
-                    NodeDict.Add(name, newConfigNode);
-                }
-            }
-            else
-            {
-                NodeList.Add(newConfigNode);
-            }
-
-            return newConfigNode;
-        }
-
-        #endregion
-
-        #region Remove
-
-        public void RemoveValue(string name)
-        {
-            if (_useDictionaryForValues)
-            {
-                ValueDict.Remove(name);
-            }
-            else
-            {
-                ValueList.RemoveAll(v => v.Key == name);
-            }
-        }
-
-        public ConfigNode RemoveNode(string name)
-        {
-            var newConfigNode = new ConfigNode(name, this);
-
-            if (_useDictionaryForNodes)
-            {
-                NodeDict.Remove(name);
-            }
-            else
-            {
-                NodeList.RemoveAll(c=> c.Name == name);
-            }
-
-            return newConfigNode;
-        }
-
-        #endregion
-
-        #region Navigate
-
-        public string GetValue(string name)
-        {
-            if (_useDictionaryForValues && ValueDict.TryGetValue(name, out var value))
-            {
-                return value;
-            }
-
-            var keyVal = ValueList.FirstOrDefault(v => v.Key == name);
-            return keyVal.Value;
-        }
-
-        public List<ConfigNode> GetNodes(string nodeName)
-        {
-            var nodes = new List<ConfigNode>();
-            if (_useDictionaryForNodes)
-            {
-                if (NodeDict.TryGetValue(nodeName, out var foundNode))
-                    nodes.Add(foundNode);
-            }
-            else
-            {
-                nodes.AddRange(NodeList.Where(n => n.Name == nodeName));
-            }
-
-            return nodes;
-        }
-
-        public bool Navigate(out ConfigNode node, params string[] xpath)
-        {
-            node = null;
-            if (xpath.Length == 2)
-            {
-                if (TryGetValue(xpath[0], out var value) && value == xpath[1])
-                {
-                    node = this;
-                    return true;
-                }
-            }
-
-            if (_useDictionaryForNodes)
-            {
-                if (NodeDict.TryGetValue(xpath[0], out var foundNode))
-                    return foundNode.Navigate(out node, xpath.Skip(1).ToArray());
-            }
-            else
-            {
-                foreach (var possibleNode in NodeList.Where(n => n.Name == xpath[0]))
-                {
-                    if (possibleNode.Navigate(out node, xpath.Skip(1).ToArray()))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool TryGetValue(string name, out string value)
-        {
-            value = null;
-            if (_useDictionaryForValues)
-            {
-                return ValueDict.TryGetValue(name, out value);
-            }
-
-            var keyVal = ValueList.FirstOrDefault(v => v.Key == name);
-            value = keyVal.Value;
-
-            return keyVal.Key == name;
-        }
-
-        public bool TryGetNodes(string nodeName, out List<ConfigNode> nodes )
-        {
-            nodes = new List<ConfigNode>();
-            if (_useDictionaryForNodes)
-            {
-                if (NodeDict.TryGetValue(nodeName, out var foundNode))
-                    nodes.Add(foundNode);
-            }
-            else
-            {
-                nodes.AddRange(NodeList.Where(n => n.Name == nodeName));
-            }
-
-            return nodes.Any();
-        }
-
-        #endregion
-
-        #endregion
-
+        
         #region Base overrides
 
         public override string ToString()
         {
             var builder = new StringBuilder();
-            if (Depth > 0)
+            if (Depth > 0) //When we are in a subnode initialize it
             {
-                builder.AppendLine(GetTabbedName());
-                builder.AppendLine(GetInitBracket());
+                InitializeNode(builder);
             }
 
             if (_useDictionaryForValues)
             {
-                foreach (var valueDictValue in ValueDict.Values)
+                foreach (var dictVal in ValueDict)
                 {
-                    builder.AppendLine(valueDictValue);
+                    GetFieldTabbing(builder);
+                    builder.Append(dictVal.Key);
+                    builder.Append(ValueSeparator);
+                    builder.AppendLine(dictVal.Value);
                 }
             }
             else
             {
-                foreach (var value in ValueList)
+                foreach (var keyVal in ValueList)
                 {
-                    builder.AppendLine(value.ToString());
+                    GetFieldTabbing(builder);
+                    builder.Append(keyVal.Key);
+                    builder.Append(ValueSeparator);
+                    builder.AppendLine(keyVal.Value);
                 }
             }
 
@@ -248,14 +107,14 @@ namespace LunaConfigNode
             }
             else
             {
-                for (var i = 0; i < NodeList.Count; i++)
+                foreach (var node in NodeList)
                 {
-                    builder.AppendLine(NodeList[i].ToString());
+                    builder.AppendLine(node.ToString());
                 }
             }
             if (Depth > 0)
             {
-                builder.AppendLine(GetEndBracket());
+                FinishNode(builder);
             }
             return builder.ToString().TrimEnd();
         }
@@ -264,39 +123,34 @@ namespace LunaConfigNode
 
         #region Private helpers
 
-        private string GetTabbedName()
+        private void GetFieldTabbing(StringBuilder builder)
         {
-            var builder = new StringBuilder();
-            for (var i = 1; i < Depth; i++)
+            for (var i = 0; i < Depth; i++)
             {
                 builder.Append('\t');
             }
-            builder.Append(Name);
-            return builder.ToString();
         }
 
-        private string GetInitBracket()
+        private void GetNodeTabbing(StringBuilder builder)
         {
-            var builder = new StringBuilder();
-            for (var i = 1; i < Depth; i++)
+            for (var i = 0; i < Depth - 1; i++)
             {
                 builder.Append('\t');
             }
-
-            builder.Append("{");
-            return builder.ToString();
         }
 
-        private string GetEndBracket()
+        private void InitializeNode(StringBuilder builder)
         {
-            var builder = new StringBuilder();
-            for (var i = 1; i < Depth; i++)
-            {
-                builder.Append('\t');
-            }
+            GetNodeTabbing(builder);
+            builder.AppendLine(Name);
+            GetNodeTabbing(builder);
+            builder.AppendLine("{");
+        }
 
+        private void FinishNode(StringBuilder builder)
+        {
+            GetNodeTabbing(builder);
             builder.Append("}");
-            return builder.ToString();
         }
 
         #endregion

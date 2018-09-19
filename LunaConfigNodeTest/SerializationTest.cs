@@ -5,14 +5,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LunaConfigNodeTest
 {
     [TestClass]
-    public class ReaderTests
+    public class SerializationTest
     {
-        [TestMethod, Ignore]
-        public void TestReadFromContent()
+        [TestMethod]
+        public void TestWriteConfigNode()
         {
-            var content = Reader.ReadFromContent(Resources.Vessel);
-            Assert.IsNotNull(content);
-            
+            var content = new ConfigNode(Resources.Vessel);
             var contentAsString = content.ToString();
 
             Assert.AreEqual(Resources.Vessel, contentAsString);
