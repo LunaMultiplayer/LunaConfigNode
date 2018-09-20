@@ -23,7 +23,7 @@ namespace LunaConfigNode
         /// <summary>
         /// Returns all the values with the specified name
         /// </summary>
-        public List<string> GetValues(string name)
+        public List<MutableKeyValue<string, string>> GetValues(string name)
         {
             return ValueDict.Get(name);
         }
@@ -31,7 +31,7 @@ namespace LunaConfigNode
         /// <summary>
         /// Returns all the config nodes with the specified name
         /// </summary>
-        public List<ConfigNode> GetNodes(string nodeName)
+        public List<MutableKeyValue<string, ConfigNode>> GetNodes(string nodeName)
         {
             return NodeDict.Get(nodeName);
         }

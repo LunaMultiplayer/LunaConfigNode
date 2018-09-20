@@ -13,7 +13,7 @@ namespace LunaConfigNode
         private readonly object _lock = new object();
 
         internal bool UseDictionary = true;
-        internal Dictionary<K, V> Dictionary { get; private set; } = new Dictionary<K, V>();
+        internal Dictionary<K, MutableKeyValue<K, V>> Dictionary { get; private set; } = new Dictionary<K, MutableKeyValue<K, V>>();
         internal List<MutableKeyValue<K, V>> List { get; private set; }
 
         public MixedCollection() { }
@@ -27,7 +27,7 @@ namespace LunaConfigNode
                 UseDictionary = !keyValuePairs.GroupBy(x => x.Key).Any(x => x.Count() > 1);
                 if (UseDictionary)
                 {
-                    Dictionary = keyValuePairs.ToDictionary(k => k.Key, v => v.Value);
+                    Dictionary = keyValuePairs.ToDictionary(k => k.Key, v => v);
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace LunaConfigNode
                     }
                     else
                     {
-                        Dictionary.Add(value.Key, value.Value);
+                        Dictionary.Add(value.Key, value);
                     }
                 }
                 else
@@ -74,7 +74,7 @@ namespace LunaConfigNode
                     }
                     else
                     {
-                        Dictionary.Add(key, value);
+                        Dictionary.Add(key, new MutableKeyValue<K, V>(key, value));
                     }
                 }
                 else
@@ -84,7 +84,7 @@ namespace LunaConfigNode
             }
         }
 
-        public List<V> Get(K key)
+        public List<MutableKeyValue<K, V>> Get(K key)
         {
             lock (_lock)
             {
@@ -92,15 +92,15 @@ namespace LunaConfigNode
                 {
                     if (Dictionary.ContainsKey(key))
                     {
-                        return new List<V> { Dictionary[key] };
+                        return new List<MutableKeyValue<K, V>> { Dictionary[key] };
                     }
                 }
                 else
                 {
-                    return List.Where(k => k.Key.Equals(key)).Select(v => v.Value).ToList();
+                    return List.Where(k => k.Key.Equals(key)).ToList();
                 }
 
-                return new List<V>();
+                return new List<MutableKeyValue<K, V>>();
             }
         }
 
@@ -136,7 +136,7 @@ namespace LunaConfigNode
                 {
                     if (Dictionary.ContainsKey(key))
                     {
-                        Dictionary[key] = value;
+                        Dictionary[key].Value = value;
                     }
                 }
                 else

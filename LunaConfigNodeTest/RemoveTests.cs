@@ -20,7 +20,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveValueSubNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("Node1")[0];
+            var subNode = configNode.GetNodes("Node1")[0].Value;
             subNode.RemoveValue("field11");
 
             Assert.AreEqual(0, subNode.GetValues("field11").Count);
@@ -30,7 +30,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("Node1")[0];
+            var subNode = configNode.GetNodes("Node1")[0].Value;
             configNode.RemoveNode(subNode);
 
             Assert.AreEqual(0, configNode.GetNodes("Node1").Count);
@@ -40,7 +40,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveOneOfSeveralNodes()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("RepeatedNode3")[0];
+            var subNode = configNode.GetNodes("RepeatedNode3")[0].Value;
             configNode.RemoveNode(subNode);
 
             Assert.AreEqual(1, configNode.GetNodes("RepeatedNode3").Count);
@@ -50,7 +50,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveAllOfSeveralNodes()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("RepeatedNode4")[0];
+            var subNode = configNode.GetNodes("RepeatedNode4")[0].Value;
             configNode.RemoveNode(subNode);
 
             Assert.AreEqual(0, configNode.GetNodes("RepeatedNode4").Count);

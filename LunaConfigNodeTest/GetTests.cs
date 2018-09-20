@@ -12,7 +12,7 @@ namespace LunaConfigNodeTest
         public void TestGetValue()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var value = configNode.GetValues("field1").FirstOrDefault();
+            var value = configNode.GetValues("field1").FirstOrDefault()?.Value;
 
             Assert.AreEqual("field1Val", value);
         }

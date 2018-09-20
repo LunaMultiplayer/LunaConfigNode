@@ -20,7 +20,7 @@ namespace LunaConfigNodeTest
         public void TestAddValueSubNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("Node1")[0];
+            var subNode = configNode.GetNodes("Node1")[0].Value;
             subNode.AddValue("name", "testValue");
 
             Assert.IsNotNull(subNode.GetValues("name"));
