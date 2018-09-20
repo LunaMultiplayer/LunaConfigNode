@@ -13,7 +13,7 @@ namespace LunaConfigNodeTest
             var configNode = new ConfigNode(Resources.Simple);
             configNode.UpdateValue("field2", "field2NewVal");
 
-            Assert.AreEqual("field2NewVal", configNode.GetValue("field2"));
+            Assert.AreEqual("field2NewVal", configNode.GetValues("field2")[0]);
         }
 
         [TestMethod]

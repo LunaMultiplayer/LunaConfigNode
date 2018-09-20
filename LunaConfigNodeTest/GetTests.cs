@@ -1,4 +1,5 @@
-﻿using LunaConfigNode;
+﻿using System.Linq;
+using LunaConfigNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +12,7 @@ namespace LunaConfigNodeTest
         public void TestGetValue()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var value = configNode.GetValue("field1");
+            var value = configNode.GetValues("field1").FirstOrDefault();
 
             Assert.AreEqual("field1Val", value);
         }

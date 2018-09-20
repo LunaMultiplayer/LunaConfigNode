@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -14,13 +13,8 @@ namespace LunaConfigNode
         public string Name { get; set; } = string.Empty;
         public ConfigNode Parent { get; set; }
 
-        private bool _useDictionaryForValues = true;
-        private Dictionary<string, string> ValueDict { get; set; } = new Dictionary<string, string>();
-        private List<KeyValuePair<string,string>> ValueList { get; set; }
-
-        private bool _useDictionaryForNodes = true;
-        private Dictionary<string, ConfigNode> NodeDict { get; set; } = new Dictionary<string, ConfigNode>();
-        private List<ConfigNode> NodeList { get; set; }
+        private MixedCollection<string, string> ValueDict { get; set; } = new MixedCollection<string, string>();
+        private MixedCollection<string, ConfigNode> NodeDict { get; set; } = new MixedCollection<string, ConfigNode>();
 
         private int Depth => Parent?.Depth + 1 ?? 0;
 
@@ -79,47 +73,61 @@ namespace LunaConfigNode
                 InitializeNode(builder);
             }
 
-            if (_useDictionaryForValues)
+            foreach (var value in ValueDict.GetAll())
             {
-                foreach (var dictVal in ValueDict)
-                {
-                    GetFieldTabbing(builder);
-                    builder.Append(dictVal.Key);
-                    builder.Append(ValueSeparator);
-                    builder.AppendLine(dictVal.Value);
-                }
-            }
-            else
-            {
-                foreach (var keyVal in ValueList)
-                {
-                    GetFieldTabbing(builder);
-                    builder.Append(keyVal.Key);
-                    builder.Append(ValueSeparator);
-                    builder.AppendLine(keyVal.Value);
-                }
+                GetFieldTabbing(builder);
+                builder.Append(value.Key);
+                builder.Append(ValueSeparator);
+                builder.AppendLine(value.Value);
             }
 
-            if (_useDictionaryForNodes)
+            foreach (var value in NodeDict.GetAllValues())
             {
-                foreach (var nodeDictValue in NodeDict.Values)
-                {
-                    builder.AppendLine(nodeDictValue.ToString());
-                }
+                builder.AppendLine(value.ToString());
             }
-            else
-            {
-                foreach (var node in NodeList)
-                {
-                    builder.AppendLine(node.ToString());
-                }
-            }
+
             if (Depth > 0)
             {
                 FinishNode(builder);
             }
             return builder.ToString().TrimEnd();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+
+            return obj.GetType() == typeof(ConfigNode) && Equals((ConfigNode)obj);
+        }
+
+        protected bool Equals(ConfigNode other)
+        {
+            return string.Equals(Name, other.Name) && ValueDict.Equals(other.ValueDict) && NodeDict.Equals(other.NodeDict);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Parent != null ? Parent.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ValueDict != null ? ValueDict.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (NodeDict != null ? NodeDict.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(ConfigNode lhs, ConfigNode rhs)
+        {
+            if (lhs == null)
+            {
+                return rhs == null;
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(ConfigNode lhs, ConfigNode rhs) => !(lhs == rhs);
 
         #endregion
 

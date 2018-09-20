@@ -33,7 +33,19 @@ RepeatedNode3
 }
 RepeatedNode3
 {
-	field31 = field31Val
-	field32 = field32Val
-	field33 = field33Val
+	field331 = field331Val
+	field332 = field332Val
+	field333 = field333Val
+}
+RepeatedNode4
+{
+	field41 = field41Val
+	field42 = field42Val
+	field43 = field43Val
+}
+RepeatedNode4
+{
+	field41 = field41Val
+	field42 = field42Val
+	field43 = field43Val
 }

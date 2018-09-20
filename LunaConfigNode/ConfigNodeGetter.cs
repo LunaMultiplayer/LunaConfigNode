@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace LunaConfigNode
 {
@@ -8,45 +7,25 @@ namespace LunaConfigNode
         /// <summary>
         /// Returns all the values inside this ConfigNode
         /// </summary>
-        public KeyValuePair<string, string>[] GetAllValues()
+        public List<MutableKeyValue<string, string>> GetAllValues()
         {
-            if (_useDictionaryForValues)
-            {
-                return ValueDict.ToArray();
-            }
-
-            return ValueList.ToArray();
+            return ValueDict.GetAll();
         }
 
         /// <summary>
         /// Returns all the nodes inside this ConfigNode
         /// </summary>
-        public ConfigNode[] GetAllNodes()
+        public List<ConfigNode> GetAllNodes()
         {
-            if (_useDictionaryForNodes)
-            {
-                return NodeDict.Values.ToArray();
-            }
-
-            return NodeList.ToArray();
+            return NodeDict.GetAllValues();
         }
 
         /// <summary>
-        /// Returns the specified value
+        /// Returns all the values with the specified name
         /// </summary>
-        public string GetValue(string name)
+        public List<string> GetValues(string name)
         {
-            if (_useDictionaryForValues)
-            {
-                if (ValueDict.TryGetValue(name, out var value))
-                    return value;
-            }
-            else if (ValueList.Any(v => v.Key == name))
-            {
-                return ValueList.FirstOrDefault(v => v.Key == name).Value;
-            }
-
-            return null;
+            return ValueDict.Get(name);
         }
 
         /// <summary>
@@ -54,18 +33,7 @@ namespace LunaConfigNode
         /// </summary>
         public List<ConfigNode> GetNodes(string nodeName)
         {
-            var nodes = new List<ConfigNode>();
-            if (_useDictionaryForNodes)
-            {
-                if (NodeDict.TryGetValue(nodeName, out var foundNode))
-                    nodes.Add(foundNode);
-            }
-            else
-            {
-                nodes.AddRange(NodeList.Where(n => n.Name == nodeName));
-            }
-
-            return nodes;
+            return NodeDict.Get(nodeName);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace LunaConfigNodeTest
             var content = new ConfigNode(Resources.Vessel);
             Assert.IsNotNull(content);
 
-            Assert.AreNotEqual(0, content.GetAllValues().Length);
+            Assert.AreNotEqual(0, content.GetAllValues().Count);
         }
     }
 }

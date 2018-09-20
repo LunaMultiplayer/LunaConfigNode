@@ -13,7 +13,7 @@ namespace LunaConfigNodeTest
             var configNode = new ConfigNode(Resources.Simple);
             configNode.AddValue("name", "testValue");
 
-            Assert.IsNotNull(configNode.GetValue("name"));
+            Assert.IsNotNull(configNode.GetValues("name"));
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace LunaConfigNodeTest
             var subNode = configNode.GetNodes("Node1")[0];
             subNode.AddValue("name", "testValue");
 
-            Assert.IsNotNull(subNode.GetValue("name"));
+            Assert.IsNotNull(subNode.GetValues("name"));
         }
         
         [TestMethod]

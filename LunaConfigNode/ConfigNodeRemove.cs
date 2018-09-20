@@ -7,14 +7,7 @@
         /// </summary>
         public void RemoveValue(string name)
         {
-            if (_useDictionaryForValues)
-            {
-                ValueDict.Remove(name);
-            }
-            else
-            {
-                ValueList.RemoveAll(v => v.Key == name);
-            }
+            ValueDict.Delete(name);
         }
 
         /// <summary>
@@ -22,14 +15,7 @@
         /// </summary>
         public void RemoveNode(ConfigNode configNode)
         {
-            if (_useDictionaryForNodes)
-            {
-                NodeDict.Remove(configNode.Name);
-            }
-            else
-            {
-                NodeList.Remove(configNode);
-            }
+            NodeDict.Delete(configNode.Name, configNode);
         }
     }
 }
