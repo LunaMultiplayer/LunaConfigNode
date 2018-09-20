@@ -42,7 +42,7 @@ namespace LunaConfigNode
             }
         }
 
-        private static void GetFieldTabbing(int ownerNodeDepth, StringBuilder builder)
+        public static void GetFieldTabbing(int ownerNodeDepth, StringBuilder builder)
         {
             for (var i = 0; i < ownerNodeDepth; i++)
             {
@@ -50,7 +50,7 @@ namespace LunaConfigNode
             }
         }
 
-        private static void GetNodeTabbing(int nodeDepth, StringBuilder builder)
+        public static void GetNodeTabbing(int nodeDepth, StringBuilder builder)
         {
             for (var i = 0; i < nodeDepth - 1; i++)
             {
@@ -58,7 +58,7 @@ namespace LunaConfigNode
             }
         }
 
-        private static void InitializeNode(string nodeName, int nodeDepth, StringBuilder builder)
+        public static void InitializeNode(string nodeName, int nodeDepth, StringBuilder builder)
         {
             GetNodeTabbing(nodeDepth, builder);
             builder.AppendLine(nodeName);
@@ -66,11 +66,10 @@ namespace LunaConfigNode
             builder.AppendLine(CfgNodeConstants.OpenNodeSymbol);
         }
 
-        private static void FinishNode(int nodeDepth, StringBuilder builder)
+        public static void FinishNode(int nodeDepth, StringBuilder builder)
         {
             GetNodeTabbing(nodeDepth, builder);
             builder.Append(CfgNodeConstants.CloseNodeSymbol);
         }
-
     }
 }
