@@ -25,7 +25,15 @@ namespace LunaConfigNode
         /// </summary>
         public List<MutableKeyValue<string, string>> GetValues(string name)
         {
-            return ValueDict.Get(name);
+            return ValueDict.GetSeveral(name);
+        }
+
+        /// <summary>
+        /// Returns a value with the specified name if only 1 exists
+        /// </summary>
+        public MutableKeyValue<string, string> GetValue(string name)
+        {
+            return ValueDict.GetSingle(name);
         }
 
         /// <summary>
@@ -33,7 +41,15 @@ namespace LunaConfigNode
         /// </summary>
         public List<MutableKeyValue<string, ConfigNode>> GetNodes(string nodeName)
         {
-            return NodeDict.Get(nodeName);
+            return NodeDict.GetSeveral(nodeName);
+        }
+
+        /// <summary>
+        /// Returns the config nodes with the specified name if there's only 1
+        /// </summary>
+        public MutableKeyValue<string, ConfigNode> GetNode(string nodeName)
+        {
+            return NodeDict.GetSingle(nodeName);
         }
     }
 }

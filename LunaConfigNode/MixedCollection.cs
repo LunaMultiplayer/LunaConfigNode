@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LunaConfigNode
@@ -12,9 +13,10 @@ namespace LunaConfigNode
     {
         private readonly object _lock = new object();
 
-        internal bool UseDictionary = true;
-        internal Dictionary<K, MutableKeyValue<K, V>> Dictionary { get; private set; } = new Dictionary<K, MutableKeyValue<K, V>>();
-        internal List<MutableKeyValue<K, V>> List { get; private set; }
+        internal List<MutableKeyValue<K, V>> AllItems { get; set; } = new List<MutableKeyValue<K, V>>();
+        internal HashSet<K> RepeatedKeys { get; } = new HashSet<K>();
+        internal Dictionary<K, MutableKeyValue<K, V>> Dictionary { get; } = new Dictionary<K, MutableKeyValue<K, V>>();
+        internal List<MutableKeyValue<K, V>> List { get; } = new List<MutableKeyValue<K, V>>();
 
         public MixedCollection() { }
 
@@ -23,15 +25,17 @@ namespace LunaConfigNode
             lock (_lock)
             {
                 var keyValuePairs = collection as List<MutableKeyValue<K, V>> ?? collection.ToList();
-
-                UseDictionary = !keyValuePairs.GroupBy(x => x.Key).Any(x => x.Count() > 1);
-                if (UseDictionary)
+                AllItems.AddRange(keyValuePairs);
+                foreach (var keyVal in keyValuePairs)
                 {
-                    Dictionary = keyValuePairs.ToDictionary(k => k.Key, v => v);
-                }
-                else
-                {
-                    List = keyValuePairs.ToList();
+                    if (!Dictionary.ContainsKey(keyVal.Key) && !RepeatedKeys.Contains(keyVal.Key))
+                        Dictionary.Add(keyVal.Key, keyVal);
+                    else
+                    {
+                        RepeatedKeys.Add(keyVal.Key);
+                        Dictionary.Remove(keyVal.Key);
+                        List.Add(keyVal);
+                    }
                 }
             }
         }
@@ -40,13 +44,15 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                AllItems.Add(value);
+                if (!RepeatedKeys.Contains(value.Key))
                 {
                     if (Dictionary.ContainsKey(value.Key))
                     {
-                        UseDictionary = false;
-                        List = new List<MutableKeyValue<K, V>>(Dictionary.ToMutableKeyValue()) { value };
-                        Dictionary = null;
+                        List.Add(Dictionary[value.Key]);
+                        List.Add(value);
+                        RepeatedKeys.Add(value.Key);
+                        Dictionary.Remove(value.Key);
                     }
                     else
                     {
@@ -62,45 +68,62 @@ namespace LunaConfigNode
 
         public void Create(K key, V value)
         {
+            var newVal = new MutableKeyValue<K, V>(key, value);
             lock (_lock)
             {
-                if (UseDictionary)
+                AllItems.Add(newVal);
+                if (!RepeatedKeys.Contains(key))
                 {
                     if (Dictionary.ContainsKey(key))
                     {
-                        UseDictionary = false;
-                        List = new List<MutableKeyValue<K, V>>(Dictionary.ToMutableKeyValue()) { new MutableKeyValue<K, V>(key, value) };
-                        Dictionary = null;
+                        List.Add(Dictionary[key]);
+                        List.Add(newVal);
+                        RepeatedKeys.Add(key);
+                        Dictionary.Remove(key);;
                     }
                     else
                     {
-                        Dictionary.Add(key, new MutableKeyValue<K, V>(key, value));
+                        Dictionary.Add(key, newVal);
                     }
                 }
                 else
                 {
-                    List.Add(new MutableKeyValue<K, V>(key, value));
+                    List.Add(newVal);
                 }
             }
         }
 
-        public List<MutableKeyValue<K, V>> Get(K key)
+        public List<MutableKeyValue<K, V>> GetSeveral(K key)
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                return Dictionary.ContainsKey(key) ? new List<MutableKeyValue<K, V>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
+            }
+        }
+
+        public MutableKeyValue<K, V> GetSingle(K key)
+        {
+            lock (_lock)
+            {
+                if (!RepeatedKeys.Contains(key))
                 {
-                    if (Dictionary.ContainsKey(key))
-                    {
-                        return new List<MutableKeyValue<K, V>> { Dictionary[key] };
-                    }
-                }
-                else
-                {
-                    return List.Where(k => k.Key.Equals(key)).ToList();
+                    return Dictionary.ContainsKey(key) ? Dictionary[key] : null;
                 }
 
-                return new List<MutableKeyValue<K, V>>();
+                throw new Exception($"Key value: \"{key}\" is not unique");
+            }
+        }
+
+        public V GetSingleValue(K key)
+        {
+            lock (_lock)
+            {
+                if (!RepeatedKeys.Contains(key))
+                {
+                    return Dictionary.ContainsKey(key) ? Dictionary[key].Value : default(V);
+                }
+
+                throw new Exception($"Key value: \"{key}\" is not unique");
             }
         }
 
@@ -108,7 +131,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ToMutableKeyValue().ToList() : List;
+                return AllItems;
             }
         }
 
@@ -116,7 +139,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ToMutableKeyValue().Select(v => v.Key).ToList() : List.Select(v => v.Key).ToList();
+                return AllItems.Select(v => v.Key).ToList();
             }
         }
 
@@ -124,7 +147,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ToMutableKeyValue().Select(v => v.Value).ToList() : List.Select(v => v.Value).ToList();
+                return AllItems.Select(v=> v.Value).ToList();
             }
         }
 
@@ -132,12 +155,9 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                if (Dictionary.ContainsKey(key))
                 {
-                    if (Dictionary.ContainsKey(key))
-                    {
-                        Dictionary[key].Value = value;
-                    }
+                    Dictionary[key].Value = value;
                 }
                 else
                 {
@@ -153,12 +173,10 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                AllItems.RemoveAll(v => v.Key.Equals(key));
+                if (Dictionary.ContainsKey(key))
                 {
-                    if (Dictionary.ContainsKey(key))
-                    {
-                        Dictionary.Remove(key);
-                    }
+                    Dictionary.Remove(key);
                 }
                 else
                 {
@@ -171,12 +189,10 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                AllItems.RemoveAll(v => v.Value.Equals(value));
+                if (Dictionary.ContainsKey(key))
                 {
-                    if (Dictionary.ContainsKey(key))
-                    {
-                        Dictionary.Remove(key);
-                    }
+                    Dictionary.Remove(key);
                 }
                 else
                 {
@@ -189,12 +205,10 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (UseDictionary)
+                AllItems.RemoveAll(v => v.Equals(value));
+                if (Dictionary.ContainsKey(value.Key))
                 {
-                    if (Dictionary.ContainsKey(value.Key))
-                    {
-                        Dictionary.Remove(value.Key);
-                    }
+                    Dictionary.Remove(value.Key);
                 }
                 else
                 {
@@ -207,7 +221,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ContainsKey(key) : List.Any(v => v.Key.Equals(key));
+                return Dictionary.ContainsKey(key) || List.Any(v => v.Key.Equals(key));
             }
         }
 
@@ -215,7 +229,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ContainsKey(value.Key) : List.Contains(value);
+                return Dictionary.ContainsKey(value.Key) || List.Contains(value);
             }
         }
 
@@ -230,28 +244,25 @@ namespace LunaConfigNode
             }
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (RepeatedKeys != null ? RepeatedKeys.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Dictionary != null ? Dictionary.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (List != null ? List.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         protected bool Equals(MixedCollection<K, V> other)
         {
             lock (_lock)
             {
-                if (UseDictionary != other.UseDictionary) return false;
-                return UseDictionary ? Dictionary.SequenceEqual(other.Dictionary) : List.SequenceEqual(other.List);
+                return AllItems.SequenceEqual(other.AllItems);
             }
         }
 
-        public override int GetHashCode()
-        {
-            lock (_lock)
-            {
-                unchecked
-                {
-                    var hashCode = UseDictionary.GetHashCode();
-                    hashCode = (hashCode * 397) ^ (Dictionary != null ? Dictionary.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (List != null ? List.GetHashCode() : 0);
-                    return hashCode;
-                }
-            }
-        }
 
         public static bool operator ==(MixedCollection<K, V> lhs, MixedCollection<K, V> rhs)
         {

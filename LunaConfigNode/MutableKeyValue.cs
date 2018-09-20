@@ -4,6 +4,8 @@ namespace LunaConfigNode
 {
     public class MutableKeyValue<T1, T2>
     {
+        private const string ValueSeparator = " = ";
+
         public T1 Key { get; set; }
         public T2 Value { get; set; }
 
@@ -40,5 +42,11 @@ namespace LunaConfigNode
         }
 
         public static bool operator !=(MutableKeyValue<T1, T2> lhs, MutableKeyValue<T1, T2> rhs) => !(lhs == rhs);
+
+        public override string ToString()
+        {
+            //No need to use a stringbuilder, the compiler will do it for us
+            return Key + ValueSeparator + Value;
+        }
     }
 }

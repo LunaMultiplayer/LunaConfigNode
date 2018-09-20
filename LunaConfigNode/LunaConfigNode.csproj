@@ -41,7 +41,6 @@
     <Compile Include="ConfigNodeGetter.cs" />
     <Compile Include="ConfigNodeRemove.cs" />
     <Compile Include="ConfigNodeAdd.cs" />
-    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="MixedCollection.cs" />
     <Compile Include="MutableKeyValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,8 +13,8 @@ namespace LunaConfigNode
         public string Name { get; set; } = string.Empty;
         public ConfigNode Parent { get; set; }
 
-        private MixedCollection<string, string> ValueDict { get; set; } = new MixedCollection<string, string>();
-        private MixedCollection<string, ConfigNode> NodeDict { get; set; } = new MixedCollection<string, ConfigNode>();
+        private MixedCollection<string, string> ValueDict { get; } = new MixedCollection<string, string>();
+        private MixedCollection<string, ConfigNode> NodeDict { get; } = new MixedCollection<string, ConfigNode>();
 
         private int Depth => Parent?.Depth + 1 ?? 0;
 
@@ -76,9 +76,7 @@ namespace LunaConfigNode
             foreach (var value in ValueDict.GetAll())
             {
                 GetFieldTabbing(builder);
-                builder.Append(value.Key);
-                builder.Append(ValueSeparator);
-                builder.AppendLine(value.Value);
+                builder.AppendLine(value.ToString());
             }
 
             foreach (var value in NodeDict.GetAllValues())
@@ -90,6 +88,7 @@ namespace LunaConfigNode
             {
                 FinishNode(builder);
             }
+
             return builder.ToString().TrimEnd();
         }
 
@@ -110,9 +109,8 @@ namespace LunaConfigNode
             unchecked
             {
                 var hashCode = (Name != null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Parent != null ? Parent.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ValueDict != null ? ValueDict.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (NodeDict != null ? NodeDict.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ValueDict.GetHashCode();
+                hashCode = (hashCode * 397) ^ NodeDict.GetHashCode();
                 return hashCode;
             }
         }

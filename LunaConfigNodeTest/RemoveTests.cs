@@ -20,7 +20,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveValueSubNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("Node1")[0].Value;
+            var subNode = configNode.GetNode("Node1").Value;
             subNode.RemoveValue("field11");
 
             Assert.AreEqual(0, subNode.GetValues("field11").Count);
@@ -30,7 +30,7 @@ namespace LunaConfigNodeTest
         public void TestRemoveNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var subNode = configNode.GetNodes("Node1")[0].Value;
+            var subNode = configNode.GetNode("Node1").Value;
             configNode.RemoveNode(subNode);
 
             Assert.AreEqual(0, configNode.GetNodes("Node1").Count);
