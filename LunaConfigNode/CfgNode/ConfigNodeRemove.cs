@@ -1,4 +1,4 @@
-﻿namespace LunaConfigNode
+﻿namespace LunaConfigNode.CfgNode
 {
     public partial class ConfigNode
     {
@@ -7,7 +7,7 @@
         /// </summary>
         public void RemoveValue(string name)
         {
-            ValueDict.Remove(name);
+            Values.Remove(name);
         }
 
         /// <summary>
@@ -15,7 +15,7 @@
         /// </summary>
         public void RemoveNode(ConfigNode configNode)
         {
-            NodeDict.Remove(configNode.Name, configNode);
+            Nodes.Remove(configNode.Name, configNode);
         }
     }
 }

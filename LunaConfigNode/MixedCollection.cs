@@ -13,18 +13,18 @@ namespace LunaConfigNode
     {
         private readonly object _lock = new object();
 
-        internal List<MutableKeyValue<K, V>> AllItems { get; } = new List<MutableKeyValue<K, V>>();
+        internal List<CfgNodeValue<K, V>> AllItems { get; } = new List<CfgNodeValue<K, V>>();
         internal Dictionary<K, int> RepeatedKeys { get; } = new Dictionary<K, int>();
-        internal Dictionary<K, MutableKeyValue<K, V>> Dictionary { get; } = new Dictionary<K, MutableKeyValue<K, V>>();
-        internal List<MutableKeyValue<K, V>> List { get; } = new List<MutableKeyValue<K, V>>();
+        internal Dictionary<K, CfgNodeValue<K, V>> Dictionary { get; } = new Dictionary<K, CfgNodeValue<K, V>>();
+        internal List<CfgNodeValue<K, V>> List { get; } = new List<CfgNodeValue<K, V>>();
 
         public MixedCollection() { }
 
-        public MixedCollection(IEnumerable<MutableKeyValue<K, V>> collection)
+        public MixedCollection(IEnumerable<CfgNodeValue<K, V>> collection)
         {
             lock (_lock)
             {
-                var keyValuePairs = collection as List<MutableKeyValue<K, V>> ?? collection.ToList();
+                var keyValuePairs = collection as List<CfgNodeValue<K, V>> ?? collection.ToList();
                 AllItems.AddRange(keyValuePairs);
                 foreach (var keyVal in keyValuePairs)
                 {
@@ -44,7 +44,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Add(MutableKeyValue<K, V> value)
+        public void Add(CfgNodeValue<K, V> value)
         {
             lock (_lock)
             {
@@ -73,7 +73,7 @@ namespace LunaConfigNode
 
         public void Create(K key, V value)
         {
-            var newVal = new MutableKeyValue<K, V>(key, value);
+            var newVal = new CfgNodeValue<K, V>(key, value);
             lock (_lock)
             {
                 AllItems.Add(newVal);
@@ -99,15 +99,15 @@ namespace LunaConfigNode
             }
         }
 
-        public List<MutableKeyValue<K, V>> GetSeveral(K key)
+        public List<CfgNodeValue<K, V>> GetSeveral(K key)
         {
             lock (_lock)
             {
-                return Dictionary.ContainsKey(key) ? new List<MutableKeyValue<K, V>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
+                return Dictionary.ContainsKey(key) ? new List<CfgNodeValue<K, V>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
             }
         }
 
-        public MutableKeyValue<K, V> GetSingle(K key)
+        public CfgNodeValue<K, V> GetSingle(K key)
         {
             lock (_lock)
             {
@@ -120,20 +120,7 @@ namespace LunaConfigNode
             }
         }
 
-        public V GetSingleValue(K key)
-        {
-            lock (_lock)
-            {
-                if (!RepeatedKeys.ContainsKey(key))
-                {
-                    return Dictionary.ContainsKey(key) ? Dictionary[key].Value : default(V);
-                }
-
-                throw new Exception($"Key value: \"{key}\" is not unique");
-            }
-        }
-
-        public List<MutableKeyValue<K, V>> GetAll()
+        public List<CfgNodeValue<K, V>> GetAll()
         {
             lock (_lock)
             {
@@ -212,7 +199,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Remove(MutableKeyValue<K, V> value)
+        public void Remove(CfgNodeValue<K, V> value)
         {
             lock (_lock)
             {
@@ -237,7 +224,7 @@ namespace LunaConfigNode
             }
         }
 
-        public bool Exists(MutableKeyValue<K, V> value)
+        public bool Exists(CfgNodeValue<K, V> value)
         {
             lock (_lock)
             {

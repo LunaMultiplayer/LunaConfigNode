@@ -1,4 +1,4 @@
-﻿namespace LunaConfigNode
+﻿namespace LunaConfigNode.CfgNode
 {
     public partial class ConfigNode
     {
@@ -7,7 +7,7 @@
         /// </summary>
         public void AddValue(string name, string value)
         {
-            ValueDict.Create(name, value);
+            Values.Create(name, value);
         }
 
         /// <summary>
@@ -15,13 +15,13 @@
         /// </summary>
         public void AddOrUpdateValue(string name, string value)
         {
-            if (ValueDict.Exists(name))
+            if (Values.Exists(name))
             {
-                ValueDict.Update(name, value);
+                Values.Update(name, value);
             }
             else
             {
-                ValueDict.Create(name, value);
+                Values.Create(name, value);
             }
         }
 
@@ -32,7 +32,7 @@
         {
             var newConfigNode = new ConfigNode(name, this);
 
-            NodeDict.Create(name, newConfigNode);
+            Nodes.Create(name, newConfigNode);
 
             return newConfigNode;
         }
@@ -42,13 +42,13 @@
         /// </summary>
         public void AddOrUpdateNode(ConfigNode value)
         {
-            if (NodeDict.Exists(value.Name))
+            if (Nodes.Exists(value.Name))
             {
-                NodeDict.Update(value.Name, value);
+                Nodes.Update(value.Name, value);
             }
             else
             {
-                NodeDict.Create(value.Name, value);
+                Nodes.Create(value.Name, value);
             }
         }
     }

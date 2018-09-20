@@ -36,13 +36,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigNode.cs" />
-    <Compile Include="ConfigNodeUpdater.cs" />
-    <Compile Include="ConfigNodeGetter.cs" />
-    <Compile Include="ConfigNodeRemove.cs" />
-    <Compile Include="ConfigNodeAdd.cs" />
+    <Compile Include="CfgNode\ConfigNode.cs" />
+    <Compile Include="CfgNodeConstants.cs" />
+    <Compile Include="CfgNodeWriter.cs" />
+    <Compile Include="CfgNode\ConfigNodeAdd.cs" />
+    <Compile Include="CfgNode\ConfigNodeGetter.cs" />
+    <Compile Include="CfgNode\ConfigNodeRemove.cs" />
+    <Compile Include="CfgNode\ConfigNodeUpdater.cs" />
     <Compile Include="MixedCollection.cs" />
-    <Compile Include="MutableKeyValue.cs" />
+    <Compile Include="CfgNode\CfgNodeValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

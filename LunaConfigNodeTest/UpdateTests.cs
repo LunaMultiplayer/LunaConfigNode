@@ -1,4 +1,4 @@
-﻿using LunaConfigNode;
+﻿using LunaConfigNode.CfgNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,9 +11,9 @@ namespace LunaConfigNodeTest
         public void TestUpdateValueDirectly()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            configNode.GetValues("field2")[0].Value = "field2NewVal";
+            configNode.GetValue("field2").Value = "field2NewVal";
 
-            Assert.AreEqual("field2NewVal", configNode.GetValues("field2")[0].Value);
+            Assert.AreEqual("field2NewVal", configNode.GetValue("field2").Value);
         }
 
         [TestMethod]

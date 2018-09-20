@@ -1,4 +1,4 @@
-﻿using LunaConfigNode;
+﻿using LunaConfigNode.CfgNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

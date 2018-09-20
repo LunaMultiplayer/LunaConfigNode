@@ -2,14 +2,14 @@
 
 namespace LunaConfigNode
 {
-    public class MutableKeyValue<T1, T2>
+    public class CfgNodeValue<T1, T2>
     {
         private const string ValueSeparator = " = ";
 
         public T1 Key { get; set; }
         public T2 Value { get; set; }
 
-        public MutableKeyValue(T1 first, T2 second)
+        public CfgNodeValue(T1 first, T2 second)
         {
             Key = first;
             Value = second;
@@ -18,10 +18,10 @@ namespace LunaConfigNode
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            return obj.GetType() == typeof(MutableKeyValue<T1, T2>) && Equals((MutableKeyValue<T1, T2>)obj);
+            return obj.GetType() == typeof(CfgNodeValue<T1, T2>) && Equals((CfgNodeValue<T1, T2>)obj);
         }
 
-        protected bool Equals(MutableKeyValue<T1, T2> other)
+        protected bool Equals(CfgNodeValue<T1, T2> other)
         {
             return Key.Equals(other.Key) && Value.Equals(other.Value);
         }
@@ -31,7 +31,7 @@ namespace LunaConfigNode
             return (EqualityComparer<T1>.Default.GetHashCode(Key) * 397) ^ EqualityComparer<T2>.Default.GetHashCode(Value);
         }
 
-        public static bool operator ==(MutableKeyValue<T1, T2> lhs, MutableKeyValue<T1, T2> rhs)
+        public static bool operator ==(CfgNodeValue<T1, T2> lhs, CfgNodeValue<T1, T2> rhs)
         {
             if (lhs == null)
             {
@@ -41,7 +41,7 @@ namespace LunaConfigNode
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(MutableKeyValue<T1, T2> lhs, MutableKeyValue<T1, T2> rhs) => !(lhs == rhs);
+        public static bool operator !=(CfgNodeValue<T1, T2> lhs, CfgNodeValue<T1, T2> rhs) => !(lhs == rhs);
 
         public override string ToString()
         {

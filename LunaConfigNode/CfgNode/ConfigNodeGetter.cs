@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace LunaConfigNode
+namespace LunaConfigNode.CfgNode
 {
     public partial class ConfigNode
     {
         /// <summary>
         /// Returns all the values inside this ConfigNode
         /// </summary>
-        public List<MutableKeyValue<string, string>> GetAllValues()
+        public List<CfgNodeValue<string, string>> GetAllValues()
         {
-            return ValueDict.GetAll();
+            return Values.GetAll();
         }
 
         /// <summary>
@@ -17,39 +17,39 @@ namespace LunaConfigNode
         /// </summary>
         public List<ConfigNode> GetAllNodes()
         {
-            return NodeDict.GetAllValues();
+            return Nodes.GetAllValues();
         }
 
         /// <summary>
         /// Returns all the values with the specified name
         /// </summary>
-        public List<MutableKeyValue<string, string>> GetValues(string name)
+        public List<CfgNodeValue<string, string>> GetValues(string name)
         {
-            return ValueDict.GetSeveral(name);
+            return Values.GetSeveral(name);
         }
 
         /// <summary>
         /// Returns a value with the specified name if only 1 exists
         /// </summary>
-        public MutableKeyValue<string, string> GetValue(string name)
+        public CfgNodeValue<string, string> GetValue(string name)
         {
-            return ValueDict.GetSingle(name);
+            return Values.GetSingle(name);
         }
 
         /// <summary>
         /// Returns all the config nodes with the specified name
         /// </summary>
-        public List<MutableKeyValue<string, ConfigNode>> GetNodes(string nodeName)
+        public List<CfgNodeValue<string, ConfigNode>> GetNodes(string nodeName)
         {
-            return NodeDict.GetSeveral(nodeName);
+            return Nodes.GetSeveral(nodeName);
         }
 
         /// <summary>
         /// Returns the config nodes with the specified name if there's only 1
         /// </summary>
-        public MutableKeyValue<string, ConfigNode> GetNode(string nodeName)
+        public CfgNodeValue<string, ConfigNode> GetNode(string nodeName)
         {
-            return NodeDict.GetSingle(nodeName);
+            return Nodes.GetSingle(nodeName);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace LunaConfigNode
+﻿namespace LunaConfigNode.CfgNode
 {
     public partial class ConfigNode
     {
@@ -7,7 +7,7 @@
         /// </summary>
         public void UpdateValue(string name, string value)
         {
-            ValueDict.Update(name, value);
+            Values.Update(name, value);
         }
 
         /// <summary>
@@ -15,7 +15,7 @@
         /// </summary>
         public void UpdateNode(ConfigNode updatedNode)
         {
-            NodeDict.Update(updatedNode.Name, updatedNode);
+            Nodes.Update(updatedNode.Name, updatedNode);
         }
     }
 }
