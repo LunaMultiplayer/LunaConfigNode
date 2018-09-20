@@ -8,6 +8,8 @@ namespace LunaConfigNode
     {
         public static string WriteConfigNode(ConfigNode node)
         {
+            if (node == null) return string.Empty;
+
             var builder = new StringBuilder();
             if (node.Depth > 0) //When we are in a subnode initialize it
             {
