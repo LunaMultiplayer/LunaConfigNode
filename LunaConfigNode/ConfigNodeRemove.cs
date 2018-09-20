@@ -7,7 +7,7 @@
         /// </summary>
         public void RemoveValue(string name)
         {
-            ValueDict.Delete(name);
+            ValueDict.Remove(name);
         }
 
         /// <summary>
@@ -15,7 +15,7 @@
         /// </summary>
         public void RemoveNode(ConfigNode configNode)
         {
-            NodeDict.Delete(configNode.Name, configNode);
+            NodeDict.Remove(configNode.Name, configNode);
         }
     }
 }

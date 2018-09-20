@@ -7,7 +7,7 @@
         /// </summary>
         public void AddValue(string name, string value)
         {
-            ValueDict.Add(name, value);
+            ValueDict.Create(name, value);
         }
 
         /// <summary>
@@ -21,7 +21,7 @@
             }
             else
             {
-                ValueDict.Add(name, value);
+                ValueDict.Create(name, value);
             }
         }
 
@@ -32,7 +32,7 @@
         {
             var newConfigNode = new ConfigNode(name, this);
 
-            NodeDict.Add(name, newConfigNode);
+            NodeDict.Create(name, newConfigNode);
 
             return newConfigNode;
         }
@@ -48,7 +48,7 @@
             }
             else
             {
-                NodeDict.Add(value.Name, value);
+                NodeDict.Create(value.Name, value);
             }
         }
     }

@@ -13,8 +13,8 @@ namespace LunaConfigNode
         private readonly object _lock = new object();
 
         internal bool UseDictionary = true;
-        internal Dictionary<K, V> Dictionary = new Dictionary<K, V>();
-        internal List<MutableKeyValue<K, V>> List;
+        internal Dictionary<K, V> Dictionary { get; private set; } = new Dictionary<K, V>();
+        internal List<MutableKeyValue<K, V>> List { get; private set; }
 
         public MixedCollection() { }
 
@@ -36,7 +36,31 @@ namespace LunaConfigNode
             }
         }
 
-        public void Add(K key, V value)
+        public void Add(MutableKeyValue<K, V> value)
+        {
+            lock (_lock)
+            {
+                if (UseDictionary)
+                {
+                    if (Dictionary.ContainsKey(value.Key))
+                    {
+                        UseDictionary = false;
+                        List = new List<MutableKeyValue<K, V>>(Dictionary.ToMutableKeyValue()) { value };
+                        Dictionary = null;
+                    }
+                    else
+                    {
+                        Dictionary.Add(value.Key, value.Value);
+                    }
+                }
+                else
+                {
+                    List.Add(value);
+                }
+            }
+        }
+
+        public void Create(K key, V value)
         {
             lock (_lock)
             {
@@ -84,7 +108,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return UseDictionary ? Dictionary.ToMutableKeyValue().ToList() : new List<MutableKeyValue<K, V>>(List);
+                return UseDictionary ? Dictionary.ToMutableKeyValue().ToList() : List;
             }
         }
 
@@ -125,7 +149,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Delete(K key)
+        public void Remove(K key)
         {
             lock (_lock)
             {
@@ -143,7 +167,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Delete(K key, V value)
+        public void Remove(K key, V value)
         {
             lock (_lock)
             {
@@ -156,8 +180,25 @@ namespace LunaConfigNode
                 }
                 else
                 {
-                    var example = new MutableKeyValue<K, V>(key, value);
-                    List.RemoveAll(v => v.Equals(example));
+                    List.RemoveAll(v => v.Value.Equals(value));
+                }
+            }
+        }
+
+        public void Remove(MutableKeyValue<K, V> value)
+        {
+            lock (_lock)
+            {
+                if (UseDictionary)
+                {
+                    if (Dictionary.ContainsKey(value.Key))
+                    {
+                        Dictionary.Remove(value.Key);
+                    }
+                }
+                else
+                {
+                    List.RemoveAll(v => v.Equals(value));
                 }
             }
         }
@@ -167,6 +208,14 @@ namespace LunaConfigNode
             lock (_lock)
             {
                 return UseDictionary ? Dictionary.ContainsKey(key) : List.Any(v => v.Key.Equals(key));
+            }
+        }
+
+        public bool Exists(MutableKeyValue<K, V> value)
+        {
+            lock (_lock)
+            {
+                return UseDictionary ? Dictionary.ContainsKey(value.Key) : List.Contains(value);
             }
         }
 
