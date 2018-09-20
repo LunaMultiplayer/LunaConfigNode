@@ -40,12 +40,12 @@ namespace LunaConfigNode
 
                         continue;
                     }
-                    if (line.Equals(OpenNodeSymbol))
+                    if (line.TrimEnd().Equals(OpenNodeSymbol))
                     {
                         currentNode = currentNode.AddNode(previousLine);
                         continue;
                     }
-                    if (line.Equals(CloseNodeSymbol))
+                    if (line.TrimEnd().Equals(CloseNodeSymbol))
                     {
                         currentNode = currentNode.Parent;
                         continue;
