@@ -1,4 +1,5 @@
 ﻿using LunaConfigNode.CfgNode;
+using System.Collections.Generic;
 using System.Text;
 
 namespace LunaConfigNode
@@ -10,55 +11,64 @@ namespace LunaConfigNode
             var builder = new StringBuilder();
             if (node.Depth > 0) //When we are in a subnode initialize it
             {
-                InitializeNode(node, builder);
+                InitializeNode(node.Name, node.Depth, builder);
             }
 
-            foreach (var value in node.Values.GetAll())
-            {
-                GetFieldTabbing(node, builder);
-                builder.AppendLine(value.ToString());
-            }
-
-            foreach (var value in node.Nodes.GetAllValues())
-            {
-                builder.AppendLine(value.ToString());
-            }
+            WriteValues(node.Values.GetAll(), node.Depth, builder);
+            WriteNodes(node.Nodes.GetAll(), builder);
 
             if (node.Depth > 0)
             {
-                FinishNode(node, builder);
+                FinishNode(node.Depth, builder);
             }
 
             return builder.ToString().TrimEnd();
         }
 
-        private static void GetFieldTabbing(ConfigNode node, StringBuilder builder)
+        public static void WriteNodes(IEnumerable<CfgNodeValue<string, ConfigNode>> nodes, StringBuilder builder)
         {
-            for (var i = 0; i < node.Depth; i++)
+            foreach (var keyVal in nodes)
+            {
+                builder.AppendLine(WriteConfigNode(keyVal.Value));
+            }
+        }
+
+        public static void WriteValues(IEnumerable<CfgNodeValue<string, string>> values, int nodeDepth, StringBuilder builder)
+        {
+            foreach (var value in values)
+            {
+                GetFieldTabbing(nodeDepth, builder);
+                builder.AppendLine(value.ToString());
+            }
+        }
+
+        private static void GetFieldTabbing(int ownerNodeDepth, StringBuilder builder)
+        {
+            for (var i = 0; i < ownerNodeDepth; i++)
             {
                 builder.Append('\t');
             }
         }
 
-        private static void GetNodeTabbing(ConfigNode node, StringBuilder builder)
+        private static void GetNodeTabbing(int nodeDepth, StringBuilder builder)
         {
-            for (var i = 0; i < node.Depth - 1; i++)
+            for (var i = 0; i < nodeDepth - 1; i++)
             {
                 builder.Append('\t');
             }
         }
 
-        private static void InitializeNode(ConfigNode node, StringBuilder builder)
+        private static void InitializeNode(string nodeName, int nodeDepth, StringBuilder builder)
         {
-            GetNodeTabbing(node, builder);
-            builder.AppendLine(node.Name);
-            GetNodeTabbing(node, builder);
+            GetNodeTabbing(nodeDepth, builder);
+            builder.AppendLine(nodeName);
+            GetNodeTabbing(nodeDepth, builder);
             builder.AppendLine(CfgNodeConstants.OpenNodeSymbol);
         }
 
-        private static void FinishNode(ConfigNode node, StringBuilder builder)
+        private static void FinishNode(int nodeDepth, StringBuilder builder)
         {
-            GetNodeTabbing(node, builder);
+            GetNodeTabbing(nodeDepth, builder);
             builder.Append(CfgNodeConstants.CloseNodeSymbol);
         }
 
