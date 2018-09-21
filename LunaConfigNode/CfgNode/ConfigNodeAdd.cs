@@ -11,6 +11,14 @@
         }
 
         /// <summary>
+        /// Adds the specified name-value
+        /// </summary>
+        public void CreateValue(CfgNodeValue<string,string> value)
+        {
+            Values.Add(value);
+        }
+
+        /// <summary>
         /// Create or updates the given value
         /// </summary>
         public void CreateOrUpdateValue(string name, string value)
@@ -35,6 +43,15 @@
             Nodes.Create(name, newConfigNode);
 
             return newConfigNode;
+        }
+
+        /// <summary>
+        /// Adds the given node as a child
+        /// </summary>
+        public void AddNode(ConfigNode value)
+        {
+            value.Parent = this;
+            Nodes.Create(value.Name, value);
         }
 
         /// <summary>
