@@ -24,23 +24,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                var keyValuePairs = collection as List<CfgNodeValue<TK, TV>> ?? collection.ToList();
-                AllItems.AddRange(keyValuePairs);
-                foreach (var keyVal in keyValuePairs)
-                {
-                    if (!Dictionary.ContainsKey(keyVal.Key) && !RepeatedKeys.ContainsKey(keyVal.Key))
-                        Dictionary.Add(keyVal.Key, keyVal);
-                    else
-                    {
-                        if (RepeatedKeys.ContainsKey(keyVal.Key))
-                            RepeatedKeys[keyVal.Key]++;
-                        else
-                            RepeatedKeys.Add(keyVal.Key, 1);
-
-                        Dictionary.Remove(keyVal.Key);
-                        List.Add(keyVal);
-                    }
-                }
+                Initialize(collection);
             }
         }
 
@@ -248,6 +232,40 @@ namespace LunaConfigNode
             lock (_lock)
             {
                 return AllItems.Count == 0;
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_lock)
+            {
+                AllItems.Clear();
+                Dictionary.Clear();
+                List.Clear();
+                RepeatedKeys.Clear();
+            }
+        }
+
+        public void Initialize(IEnumerable<CfgNodeValue<TK, TV>> collection)
+        {
+            if (!IsEmpty()) Clear();
+
+            var keyValuePairs = collection as List<CfgNodeValue<TK, TV>> ?? collection.ToList();
+            AllItems.AddRange(keyValuePairs);
+            foreach (var keyVal in keyValuePairs)
+            {
+                if (!Dictionary.ContainsKey(keyVal.Key) && !RepeatedKeys.ContainsKey(keyVal.Key))
+                    Dictionary.Add(keyVal.Key, keyVal);
+                else
+                {
+                    if (RepeatedKeys.ContainsKey(keyVal.Key))
+                        RepeatedKeys[keyVal.Key]++;
+                    else
+                        RepeatedKeys.Add(keyVal.Key, 1);
+
+                    Dictionary.Remove(keyVal.Key);
+                    List.Add(keyVal);
+                }
             }
         }
 
