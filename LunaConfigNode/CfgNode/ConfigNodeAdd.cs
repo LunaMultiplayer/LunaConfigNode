@@ -26,9 +26,9 @@
         }
 
         /// <summary>
-        /// Adds a new config node with the given name
+        /// Creates a new empty config node with the given name
         /// </summary>
-        public ConfigNode AddNode(string name)
+        public ConfigNode CreateNode(string name)
         {
             var newConfigNode = new ConfigNode(name, this);
 
@@ -40,7 +40,7 @@
         /// <summary>
         /// Adds or updates the matching node names
         /// </summary>
-        public void AddOrReplaceNode(ConfigNode value)
+        public void CreateOrReplaceNode(ConfigNode value)
         {
             if (Nodes.Exists(value.Name))
             {

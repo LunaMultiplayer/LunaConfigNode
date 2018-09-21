@@ -30,7 +30,7 @@ namespace LunaConfigNodeTest
         public void TestAddNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            configNode.AddNode("NewNode");
+            configNode.CreateNode("NewNode");
 
             var subNode = configNode.GetNodes("NewNode");
             Assert.AreEqual(1, subNode.Count);

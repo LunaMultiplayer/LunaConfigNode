@@ -33,7 +33,7 @@ namespace LunaConfigNode.CfgNode
                     }
                     if (line.TrimEnd().Equals(CfgNodeConstants.OpenNodeSymbol))
                     {
-                        currentNode = currentNode.AddNode(previousLine);
+                        currentNode = currentNode.CreateNode(previousLine);
                         continue;
                     }
                     if (line.TrimEnd().Equals(CfgNodeConstants.CloseNodeSymbol))
