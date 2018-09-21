@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-16"?>
+<LMPConfigNodeToXML>
+  <Parameter name="pid">dab1a64e07df4fde84c47ed192a83fb2</Parameter>
+  <Parameter name="persistentId">2599668491</Parameter>
+  <Parameter name="name">MINMUS ComSat 1.B</Parameter>
+  <Parameter name="type">Relay</Parameter>
+  <Parameter name="sit">FLYING</Parameter>
+  <Parameter name="landed">False</Parameter>
+  <Parameter name="skipGroundPositioning">False</Parameter>
+  <Parameter name="vesselSpawning">False</Parameter>
+  <Parameter name="launchedFrom">LaunchPad</Parameter>
+  <Parameter name="landedAt">
+  </Parameter>
+  <Parameter name="displaylandedAt">
+  </Parameter>
+  <Parameter name="splashed">False</Parameter>
+  <Parameter name="met">12362703.7384834</Parameter>
+  <Parameter name="lct">2654790.23555311</Parameter>
+  <Parameter name="lastUT">3329807.38794184</Parameter>
+  <Parameter name="distanceTraveled">2040384.428939</Parameter>
+  <Parameter name="root">0</Parameter>
+  <Parameter name="lat">0.0205376813026653</Parameter>
+  <Parameter name="lon">-80.3621119222718</Parameter>
+  <Parameter name="alt">452816.29824225</Parameter>
+  <Parameter name="hgt">-1</Parameter>
+  <Parameter name="nrm">-0.351498693227768,-0.785783648490906,0.508913338184357</Parameter>
+  <Parameter name="rot">0.6148784,0.3064756,-0.3426818,-0.6407547</Parameter>
+  <Parameter name="CoM">0,0.504316211,0</Parameter>
+  <Parameter name="stg">0</Parameter>
+  <Parameter name="prst">False</Parameter>
+  <Parameter name="ref">0</Parameter>
+  <Parameter name="ctrl">False</Parameter>
+  <Parameter name="PQSMin">2</Parameter>
+  <Parameter name="PQSMax">10</Parameter>
+  <Parameter name="cPch">0.2</Parameter>
+  <Parameter name="cHdg">0.3</Parameter>
+  <Parameter name="cMod">0</Parameter>
+  <Node name="ORBIT">
+    <Parameter name="SMA">512659.956417235</Parameter>
+    <Parameter name="ECC">0.000448478862856028</Parameter>
+    <Parameter name="INC">0.0306839256165806</Parameter>
+    <Parameter name="LPE">5.12274456074511</Parameter>
+    <Parameter name="LAN">270.941983160666</Parameter>
+    <Parameter name="MNA">2.31821921381711</Parameter>
+    <Parameter name="EPH">15017497.9540365</Parameter>
+    <Parameter name="REF">3</Parameter>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">microEngine</Parameter>
+    <Parameter name="cid">4290221158</Parameter>
+    <Parameter name="uid">28714296</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">2752563244</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">0</Parameter>
+    <Parameter name="position">0,0,0</Parameter>
+    <Parameter name="rotation">0,0,0,1</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">0</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">0</Parameter>
+    <Parameter name="attm">0</Parameter>
+    <Parameter name="srfN">, -1</Parameter>
+    <Parameter name="attN">top, 1</Parameter>
+    <Parameter name="attN">bottom, -1</Parameter>
+    <Parameter name="mass">0.0199999996</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.81942180271346</Parameter>
+    <Parameter name="tempExt">235.64318467611881</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0.5</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">microEngine (JJ Science Factory Relais)</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="MODULE">
+      <Parameter name="name">ModuleEnginesFX</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="staged">False</Parameter>
+      <Parameter name="flameout">False</Parameter>
+      <Parameter name="EngineIgnited">True</Parameter>
+      <Parameter name="engineShutdown">False</Parameter>
+      <Parameter name="currentThrottle">0</Parameter>
+      <Parameter name="thrustPercentage">100</Parameter>
+      <Parameter name="manuallyOverridden">False</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="OnAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="ShutdownAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="ActivateAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleTestSubject</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS" />
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">miniFuelTank</Parameter>
+    <Parameter name="cid">4290221106</Parameter>
+    <Parameter name="uid">2872754226</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">747361492</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">0</Parameter>
+    <Parameter name="position">-2.3841869278840022E-07,0.17427453398704529,0</Parameter>
+    <Parameter name="rotation">0,0,0,1.00000024</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">-1</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">-1</Parameter>
+    <Parameter name="attm">1</Parameter>
+    <Parameter name="srfN">srfAttach, -1</Parameter>
+    <Parameter name="attN">top, 2</Parameter>
+    <Parameter name="attN">bottom, 0</Parameter>
+    <Parameter name="mass">0.0250000004</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.82279688511588</Parameter>
+    <Parameter name="tempExt">235.64230830036951</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0.5</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">miniFuelTank</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="RESOURCE">
+      <Parameter name="name">LiquidFuel</Parameter>
+      <Parameter name="amount">4.9835385247730599</Parameter>
+      <Parameter name="maxAmount">18</Parameter>
+      <Parameter name="flowState">True</Parameter>
+      <Parameter name="isTweakable">True</Parameter>
+      <Parameter name="hideFlow">False</Parameter>
+      <Parameter name="isVisible">True</Parameter>
+      <Parameter name="flowMode">Both</Parameter>
+    </Node>
+    <Node name="RESOURCE">
+      <Parameter name="name">Oxidizer</Parameter>
+      <Parameter name="amount">6.0909907639991898</Parameter>
+      <Parameter name="maxAmount">22</Parameter>
+      <Parameter name="flowState">True</Parameter>
+      <Parameter name="isTweakable">True</Parameter>
+      <Parameter name="hideFlow">False</Parameter>
+      <Parameter name="isVisible">True</Parameter>
+      <Parameter name="flowMode">Both</Parameter>
+    </Node>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">probeCoreOcto</Parameter>
+    <Parameter name="cid">4290221080</Parameter>
+    <Parameter name="uid">358073241</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">736693850</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">1</Parameter>
+    <Parameter name="position">3.0447219317173216E-14,0.53563332557678223,0</Parameter>
+    <Parameter name="rotation">-8.3245263E-15,0.707106948,-8.3245263E-15,-0.707106948</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">-1</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">-1</Parameter>
+    <Parameter name="attm">0</Parameter>
+    <Parameter name="srfN">, -1</Parameter>
+    <Parameter name="attN">bottom, 1</Parameter>
+    <Parameter name="attN">top, 3</Parameter>
+    <Parameter name="mass">0.100000001</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.82274416062057</Parameter>
+    <Parameter name="tempExt">235.66112144479814</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">probeCoreOcto</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="MODULE">
+      <Parameter name="name">ModuleCommand</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="hibernation">False</Parameter>
+      <Parameter name="hibernateOnWarp">False</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="MakeReferenceToggle">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="HibernateToggle">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleReactionWheel</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="actuatorModeCycle">0</Parameter>
+      <Parameter name="authorityLimiter">100</Parameter>
+      <Parameter name="stateString">En cours</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Parameter name="WheelState">Active</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="CycleAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="Activate">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="Deactivate">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="Toggle">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleSAS</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="standaloneToggle">True</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS" />
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleKerbNetAccess</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="OpenKerbNetAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleDataTransmitter</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="xmitIncomplete">False</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Parameter name="canComm">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="StartTransmissionAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="active">False</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleTripLogger</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS" />
+      <Node name="Log">
+        <Parameter name="flight">0</Parameter>
+        <Parameter name="0">Flight,Kerbin</Parameter>
+        <Parameter name="0">Suborbit,Kerbin</Parameter>
+        <Parameter name="0">Orbit,Kerbin</Parameter>
+        <Parameter name="0">Flyby,Minmus</Parameter>
+        <Parameter name="0">Escape,Minmus</Parameter>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="RESOURCE">
+      <Parameter name="name">ElectricCharge</Parameter>
+      <Parameter name="amount">10</Parameter>
+      <Parameter name="maxAmount">10</Parameter>
+      <Parameter name="flowState">True</Parameter>
+      <Parameter name="isTweakable">True</Parameter>
+      <Parameter name="hideFlow">False</Parameter>
+      <Parameter name="isVisible">True</Parameter>
+      <Parameter name="flowMode">Both</Parameter>
+    </Node>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">RelayAntenna5</Parameter>
+    <Parameter name="cid">4290221042</Parameter>
+    <Parameter name="uid">2702580956</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">2437372322</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">2</Parameter>
+    <Parameter name="position">-2.3841866436669079E-07,0.72271764278411865,0</Parameter>
+    <Parameter name="rotation">-8.3245263E-15,0.707106948,-8.3245263E-15,-0.707106948</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">-1</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">-1</Parameter>
+    <Parameter name="attm">0</Parameter>
+    <Parameter name="srfN">srfAttach, -1</Parameter>
+    <Parameter name="attN">bottom, 2</Parameter>
+    <Parameter name="mass">0.150000006</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.82549026281575</Parameter>
+    <Parameter name="tempExt">235.93559642331127</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0.5</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">RelayAntenna5</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="MODULE">
+      <Parameter name="name">ModuleDataTransmitter</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="xmitIncomplete">False</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Parameter name="canComm">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="StartTransmissionAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+    <Node name="MODULE">
+      <Parameter name="name">ModuleTripLogger</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS" />
+      <Node name="Log">
+        <Parameter name="flight">0</Parameter>
+        <Parameter name="0">Flight,Kerbin</Parameter>
+        <Parameter name="0">Suborbit,Kerbin</Parameter>
+        <Parameter name="0">Orbit,Kerbin</Parameter>
+        <Parameter name="0">Flyby,Minmus</Parameter>
+        <Parameter name="0">Escape,Minmus</Parameter>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">solarPanels3</Parameter>
+    <Parameter name="cid">4290221012</Parameter>
+    <Parameter name="uid">3728603203</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">3100654959</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">2</Parameter>
+    <Parameter name="position">-5.9604644775390625E-08,0.52490639686584473,0.34342333674430847</Parameter>
+    <Parameter name="rotation">9.67511848E-10,-0.707106888,-8.32452461E-15,-0.707107008</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">-1</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">-1</Parameter>
+    <Parameter name="attm">1</Parameter>
+    <Parameter name="sym">5</Parameter>
+    <Parameter name="srfN">srfAttach, 2</Parameter>
+    <Parameter name="mass">0.0175000001</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.8341903594135</Parameter>
+    <Parameter name="tempExt">236.33932467248954</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0.5</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">solarPanels3</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="MODULE">
+      <Parameter name="name">ModuleDeployableSolarPanel</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="efficiencyMult">1</Parameter>
+      <Parameter name="launchUT">2653452.0771695399</Parameter>
+      <Parameter name="currentRotation">(-0.6, -0.4, 0.4, 0.6)</Parameter>
+      <Parameter name="storedAnimationTime">0</Parameter>
+      <Parameter name="storedAnimationSpeed">0</Parameter>
+      <Parameter name="deployState">EXTENDED</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="ExtendPanelsAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="active">False</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="ExtendAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="RetractAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="active">False</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+  </Node>
+  <Node name="PART">
+    <Parameter name="name">solarPanels3</Parameter>
+    <Parameter name="cid">4290220912</Parameter>
+    <Parameter name="uid">2173859323</Parameter>
+    <Parameter name="mid">2257741446</Parameter>
+    <Parameter name="persistentId">2705067307</Parameter>
+    <Parameter name="launchID">1</Parameter>
+    <Parameter name="parent">2</Parameter>
+    <Parameter name="position">-4.1723268395799096E-07,0.52490639686584473,-0.34342321753501892</Parameter>
+    <Parameter name="rotation">8.3245263E-15,-0.707106948,8.3245263E-15,0.707106948</Parameter>
+    <Parameter name="mirror">1,1,1</Parameter>
+    <Parameter name="symMethod">Radial</Parameter>
+    <Parameter name="istg">0</Parameter>
+    <Parameter name="resPri">0</Parameter>
+    <Parameter name="dstg">4</Parameter>
+    <Parameter name="sqor">-1</Parameter>
+    <Parameter name="sepI">-1</Parameter>
+    <Parameter name="sidx">-1</Parameter>
+    <Parameter name="attm">1</Parameter>
+    <Parameter name="sym">4</Parameter>
+    <Parameter name="srfN">srfAttach, 2</Parameter>
+    <Parameter name="mass">0.0175000001</Parameter>
+    <Parameter name="shielded">False</Parameter>
+    <Parameter name="temp">235.81743421421754</Parameter>
+    <Parameter name="tempExt">235.48464119875666</Parameter>
+    <Parameter name="tempExtUnexp">4</Parameter>
+    <Parameter name="expt">0.5</Parameter>
+    <Parameter name="state">0</Parameter>
+    <Parameter name="PreFailState">0</Parameter>
+    <Parameter name="attached">True</Parameter>
+    <Parameter name="autostrutMode">Off</Parameter>
+    <Parameter name="rigidAttachment">False</Parameter>
+    <Parameter name="flag">Squad/Flags/default</Parameter>
+    <Parameter name="rTrf">solarPanels3</Parameter>
+    <Parameter name="modCost">0</Parameter>
+    <Node name="EVENTS" />
+    <Node name="ACTIONS" />
+    <Node name="PARTDATA" />
+    <Node name="MODULE">
+      <Parameter name="name">ModuleDeployableSolarPanel</Parameter>
+      <Parameter name="isEnabled">True</Parameter>
+      <Parameter name="efficiencyMult">1</Parameter>
+      <Parameter name="launchUT">2653452.0771695399</Parameter>
+      <Parameter name="currentRotation">(-0.6, 0.4, -0.4, 0.6)</Parameter>
+      <Parameter name="storedAnimationTime">0</Parameter>
+      <Parameter name="storedAnimationSpeed">0</Parameter>
+      <Parameter name="deployState">EXTENDED</Parameter>
+      <Parameter name="stagingEnabled">True</Parameter>
+      <Node name="EVENTS" />
+      <Node name="ACTIONS">
+        <Node name="ExtendPanelsAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="active">False</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="ExtendAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+        <Node name="RetractAction">
+          <Parameter name="actionGroup">None</Parameter>
+          <Parameter name="active">False</Parameter>
+          <Parameter name="wasActiveBeforePartWasAdjusted">False</Parameter>
+        </Node>
+      </Node>
+      <Node name="UPGRADESAPPLIED" />
+    </Node>
+  </Node>
+  <Node name="ACTIONGROUPS">
+    <Parameter name="Stage">False, 2653727.90006041</Parameter>
+    <Parameter name="Gear">False, 0</Parameter>
+    <Parameter name="Light">False, 0</Parameter>
+    <Parameter name="RCS">False, 0</Parameter>
+    <Parameter name="SAS">True, 2656262.9636067</Parameter>
+    <Parameter name="Brakes">False, 0</Parameter>
+    <Parameter name="Abort">False, 0</Parameter>
+    <Parameter name="Custom01">False, 2653581.79716966</Parameter>
+    <Parameter name="Custom02">True, 2653953.33631061</Parameter>
+    <Parameter name="Custom03">False, 0</Parameter>
+    <Parameter name="Custom04">False, 0</Parameter>
+    <Parameter name="Custom05">False, 0</Parameter>
+    <Parameter name="Custom06">False, 0</Parameter>
+    <Parameter name="Custom07">False, 0</Parameter>
+    <Parameter name="Custom08">False, 0</Parameter>
+    <Parameter name="Custom09">False, 0</Parameter>
+    <Parameter name="Custom10">False, 0</Parameter>
+  </Node>
+  <Node name="DISCOVERY">
+    <Parameter name="state">-1</Parameter>
+    <Parameter name="lastObservedTime">0</Parameter>
+    <Parameter name="lifetime">Infinity</Parameter>
+    <Parameter name="refTime">Infinity</Parameter>
+    <Parameter name="size">2</Parameter>
+  </Node>
+  <Node name="FLIGHTPLAN" />
+  <Node name="CTRLSTATE">
+    <Parameter name="pitch">-1.551005E-05</Parameter>
+    <Parameter name="yaw">-2.498809E-06</Parameter>
+    <Parameter name="roll">-8.221957E-06</Parameter>
+    <Parameter name="trimPitch">0</Parameter>
+    <Parameter name="trimYaw">0</Parameter>
+    <Parameter name="trimRoll">0</Parameter>
+    <Parameter name="mainThrottle">0</Parameter>
+  </Node>
+  <Node name="VESSELMODULES">
+    <Node name="FlightIntegrator" />
+    <Node name="CommNetVessel">
+      <Parameter name="controlState">ProbeFull</Parameter>
+      <Parameter name="canComm">True</Parameter>
+    </Node>
+  </Node>
+</LMPConfigNodeToXML>
