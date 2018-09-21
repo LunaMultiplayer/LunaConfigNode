@@ -272,7 +272,7 @@ namespace LunaConfigNode
                 return ReferenceEquals(rhs, null);
             }
 
-            return lhs.Equals(rhs);
+            return !ReferenceEquals(rhs, null) && lhs.Equals(rhs);
         }
 
         public static bool operator !=(MixedCollection<K, V> lhs, MixedCollection<K, V> rhs) => !(lhs == rhs);
