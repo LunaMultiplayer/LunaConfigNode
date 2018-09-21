@@ -267,9 +267,9 @@ namespace LunaConfigNode
 
         public static bool operator ==(MixedCollection<K, V> lhs, MixedCollection<K, V> rhs)
         {
-            if (lhs == null)
+            if (ReferenceEquals(lhs, null))
             {
-                return rhs == null;
+                return ReferenceEquals(rhs, null);
             }
 
             return lhs.Equals(rhs);

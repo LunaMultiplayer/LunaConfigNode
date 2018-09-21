@@ -90,9 +90,9 @@ namespace LunaConfigNode.CfgNode
 
         public static bool operator ==(ConfigNode lhs, ConfigNode rhs)
         {
-            if (lhs == null)
+            if (ReferenceEquals(lhs, null))
             {
-                return rhs == null;
+                return ReferenceEquals(rhs, null);
             }
 
             return lhs.Equals(rhs);

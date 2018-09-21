@@ -33,9 +33,9 @@ namespace LunaConfigNode
 
         public static bool operator ==(CfgNodeValue<T1, T2> lhs, CfgNodeValue<T1, T2> rhs)
         {
-            if (lhs == null)
+            if (ReferenceEquals(lhs, null))
             {
-                return rhs == null;
+                return ReferenceEquals(rhs, null);
             }
 
             return lhs.Equals(rhs);

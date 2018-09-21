@@ -2,6 +2,7 @@
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using LunaConfigNode;
 
 namespace LunaConfigNodeTest
 {
@@ -18,6 +19,13 @@ namespace LunaConfigNodeTest
             
             var areEqual = string.Equals(asUnixStr, contentAsString, StringComparison.Ordinal);
             Assert.IsTrue(areEqual);
+        }
+
+        [TestMethod]
+        public void TestWriteNullConfigNode()
+        {
+            var asUnixStr = CfgNodeWriter.WriteConfigNode(null);
+            Assert.AreEqual(string.Empty,asUnixStr);
         }
     }
 }
