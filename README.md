@@ -14,7 +14,7 @@
 
 # Luna Multiplayer Mod (LMP) Config node parser
 
-Allows you to parse and read a file/content in ConfigNode format without having to use the KSP dll  
+*Allows you to parse and read files in ConfigNode format without having to use the KSP dll*  
 
 ### Main features:
 
