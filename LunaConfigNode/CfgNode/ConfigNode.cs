@@ -26,7 +26,7 @@ namespace LunaConfigNode.CfgNode
                 {
                     if (line.Contains(CfgNodeConstants.ValueSeparator))
                     {
-                        currentNode.AddValue(line.Substring(0, line.IndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal)).Trim(),
+                        currentNode.CreateValue(line.Substring(0, line.IndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal)).Trim(),
                             line.Substring(line.LastIndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal) + CfgNodeConstants.ValueSeparator.Length).Trim());
 
                         continue;

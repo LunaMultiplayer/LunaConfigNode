@@ -3,17 +3,17 @@
     public partial class ConfigNode
     {
         /// <summary>
-        /// Adds the specified name and value
+        /// Create the specified name and value
         /// </summary>
-        public void AddValue(string name, string value)
+        public void CreateValue(string name, string value)
         {
             Values.Create(name, value);
         }
 
         /// <summary>
-        /// Adds or updates the given value
+        /// Create or updates the given value
         /// </summary>
-        public void AddOrUpdateValue(string name, string value)
+        public void CreateOrUpdateValue(string name, string value)
         {
             if (Values.Exists(name))
             {

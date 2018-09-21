@@ -11,7 +11,7 @@ namespace LunaConfigNodeTest
         public void TestAddValueRoot()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            configNode.AddValue("name", "testValue");
+            configNode.CreateValue("name", "testValue");
 
             Assert.IsNotNull(configNode.GetValues("name"));
         }
@@ -21,7 +21,7 @@ namespace LunaConfigNodeTest
         {
             var configNode = new ConfigNode(Resources.Simple);
             var subNode = configNode.GetNodes("Node1")[0].Value;
-            subNode.AddValue("name", "testValue");
+            subNode.CreateValue("name", "testValue");
 
             Assert.IsNotNull(subNode.GetValues("name"));
         }
