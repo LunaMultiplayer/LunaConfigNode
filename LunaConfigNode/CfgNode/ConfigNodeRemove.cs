@@ -15,7 +15,15 @@
         /// </summary>
         public void RemoveNode(ConfigNode configNode)
         {
-            Nodes.Remove(configNode.Name, configNode);
+            Nodes.Remove(new CfgNodeValue<string, ConfigNode>(configNode.Name, configNode));
+        }
+
+        /// <summary>
+        /// Removes the nodes that have the given name
+        /// </summary>
+        public void RemoveNode(string name)
+        {
+            Nodes.Remove(name);
         }
     }
 }

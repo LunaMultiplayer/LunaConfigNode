@@ -128,6 +128,9 @@ namespace LunaConfigNode
             }
         }
 
+        /// <summary>
+        /// Sets a new value for all the elements that matches in KEY
+        /// </summary>
         public void Update(TK key, TV value)
         {
             lock (_lock)
@@ -141,6 +144,30 @@ namespace LunaConfigNode
                     foreach (var keyVal in List.Where(k => k.Key.Equals(key)))
                     {
                         keyVal.Value = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Replaces all the elements that match in KEY and VALUE for the new one
+        /// </summary>
+        public void Replace(CfgNodeValue<TK, TV> oldValue, CfgNodeValue<TK, TV> newValue)
+        {
+            lock (_lock)
+            {
+                if (Dictionary.ContainsKey(oldValue.Key))
+                {
+                    Dictionary[oldValue.Key] = newValue;
+                }
+                else
+                {
+                    for (var i = 0; i < List.Count; i++)
+                    {
+                        if (List[i].Equals(oldValue))
+                        {
+                            List[i] = newValue;
+                        }
                     }
                 }
             }

@@ -11,11 +11,19 @@
         }
 
         /// <summary>
-        /// Replaces all the nodes with the matching node name if they exist for the one given as parameter
+        /// Replaces ALL the nodes with the matching node name if they exist for the one given as parameter
         /// </summary>
-        public void ReplaceNode(ConfigNode updatedNode)
+        public void ReplaceNode(string name, ConfigNode updatedNode)
         {
-            Nodes.Update(updatedNode.Name, updatedNode);
+            Nodes.Update(name, updatedNode);
+        }
+
+        /// <summary>
+        /// Replaces the nodes with the matching node name and configNode if it exists for the one given as parameter
+        /// </summary>
+        public void ReplaceNode(ConfigNode oldNode, ConfigNode updatedNode)
+        {
+            Nodes.Replace(new CfgNodeValue<string, ConfigNode>(oldNode.Name, oldNode), new CfgNodeValue<string, ConfigNode>(updatedNode.Name, updatedNode));
         }
     }
 }
