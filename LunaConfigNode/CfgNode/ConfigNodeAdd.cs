@@ -40,7 +40,7 @@
         /// <summary>
         /// Adds or updates the matching node names
         /// </summary>
-        public void AddOrUpdateNode(ConfigNode value)
+        public void AddOrReplaceNode(ConfigNode value)
         {
             if (Nodes.Exists(value.Name))
             {

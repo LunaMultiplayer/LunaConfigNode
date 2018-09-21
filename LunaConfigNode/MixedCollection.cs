@@ -235,6 +235,22 @@ namespace LunaConfigNode
             }
         }
 
+        public int Count()
+        {
+            lock (_lock)
+            {
+                return AllItems.Count;
+            }
+        }
+
+        public bool IsEmpty()
+        {
+            lock (_lock)
+            {
+                return AllItems.Count == 0;
+            }
+        }
+
         #region Base overrides
 
         public override bool Equals(object obj)

@@ -53,6 +53,11 @@ namespace LunaConfigNode.CfgNode
         }
 
         #endregion
+
+        public bool IsEmpty()
+        {
+            return Values.IsEmpty() && Nodes.IsEmpty();
+        }
         
         #region Base overrides
 
