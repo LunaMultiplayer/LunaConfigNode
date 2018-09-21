@@ -14,11 +14,14 @@
 
 # Luna Multiplayer Mod (LMP) Config node parser
 
-*A config node parser for the [Luna multiplayer mod](https://github.com/LunaMultiplayer/LunaMultiplayer)*
+*Allows you to parse and read files in ConfigNode format without having to use the KSP dll*  
 
-I created this dll to allow to parse and read a file/content in config node format from another software without having to use the KSP dll  
+### Main features:
 
-It has a better performance in some cases as it uses dictionaries instead of lists to store values and subnodes whenever is possible. Also, it uses a string builder to serialize it back to a string
+- Better performance as it uses dictionaries instead of lists to store values/subnodes whenever is possible.
+- Uses a string builder to serialize it to a string.
+- Includes a ConfigNode <-> XML converter
+- The edition of nodes/values is thread safe
 
 ---
 
