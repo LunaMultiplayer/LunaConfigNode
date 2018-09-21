@@ -29,8 +29,8 @@ namespace LunaConfigNodeTest
         public void TestUpdateNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var newNode = new ConfigNode { Name = "Node2" };
-            configNode.UpdateNode(newNode);
+            var newNode = new ConfigNode("Node2", null);
+            configNode.ReplaceNode(newNode);
 
             Assert.AreEqual(newNode, configNode.GetNodes("Node2")[0].Value);
         }
@@ -39,8 +39,8 @@ namespace LunaConfigNodeTest
         public void TestUpdateSeveralNode()
         {
             var configNode = new ConfigNode(Resources.Simple);
-            var newNode = new ConfigNode { Name = "RepeatedNode3" };
-            configNode.UpdateNode(newNode);
+            var newNode = new ConfigNode("RepeatedNode3", configNode);
+            configNode.ReplaceNode(newNode);
 
             Assert.AreEqual(newNode, configNode.GetNodes("RepeatedNode3")[0].Value);
             Assert.AreEqual(newNode, configNode.GetNodes("RepeatedNode3")[1].Value);

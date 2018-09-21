@@ -11,9 +11,9 @@
         }
 
         /// <summary>
-        /// Updates all the nodes with the matching node name if they exist
+        /// Replaces all the nodes with the matching node name if they exist for the one given as parameter
         /// </summary>
-        public void UpdateNode(ConfigNode updatedNode)
+        public void ReplaceNode(ConfigNode updatedNode)
         {
             Nodes.Update(updatedNode.Name, updatedNode);
         }

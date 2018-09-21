@@ -6,7 +6,7 @@ namespace LunaConfigNode.CfgNode
     public partial class ConfigNode
     {
         public string Name { get; set; } = string.Empty;
-        public ConfigNode Parent { get; private set; }
+        public ConfigNode Parent { get; set; }
 
         public MixedCollection<string, string> Values { get; } = new MixedCollection<string, string>();
         public MixedCollection<string, ConfigNode> Nodes { get; } = new MixedCollection<string, ConfigNode>();
@@ -14,11 +14,7 @@ namespace LunaConfigNode.CfgNode
         public int Depth => Parent?.Depth + 1 ?? 0;
 
         #region Constructor
-
-        public ConfigNode()
-        {
-        }
-
+        
         public ConfigNode(string contents)
         {
             var currentNode = this;
@@ -50,7 +46,7 @@ namespace LunaConfigNode.CfgNode
             }
         }
 
-        private ConfigNode(string name, ConfigNode parent)
+        public ConfigNode(string name, ConfigNode parent)
         {
             Name = name;
             Parent = parent;

@@ -6,25 +6,25 @@ namespace LunaConfigNode
 {
     /// <summary>
     /// This is a thread safe collection that uses a Dictionary when possible. Otherwise it uses a List
+    /// Provides fast access to the elements if they are not repeated (as it will use the dictionary for looking it up)
+    /// The structure is 'Key,Value' as in a dictionary
     /// </summary>
-    /// <typeparam name="K"></typeparam>
-    /// <typeparam name="V"></typeparam>
-    public class MixedCollection<K, V>
+    public class MixedCollection<TK, TV>
     {
         private readonly object _lock = new object();
 
-        internal List<CfgNodeValue<K, V>> AllItems { get; } = new List<CfgNodeValue<K, V>>();
-        internal Dictionary<K, int> RepeatedKeys { get; } = new Dictionary<K, int>();
-        internal Dictionary<K, CfgNodeValue<K, V>> Dictionary { get; } = new Dictionary<K, CfgNodeValue<K, V>>();
-        internal List<CfgNodeValue<K, V>> List { get; } = new List<CfgNodeValue<K, V>>();
+        internal List<CfgNodeValue<TK, TV>> AllItems { get; } = new List<CfgNodeValue<TK, TV>>();
+        internal Dictionary<TK, int> RepeatedKeys { get; } = new Dictionary<TK, int>();
+        internal Dictionary<TK, CfgNodeValue<TK, TV>> Dictionary { get; } = new Dictionary<TK, CfgNodeValue<TK, TV>>();
+        internal List<CfgNodeValue<TK, TV>> List { get; } = new List<CfgNodeValue<TK, TV>>();
 
         public MixedCollection() { }
 
-        public MixedCollection(IEnumerable<CfgNodeValue<K, V>> collection)
+        public MixedCollection(IEnumerable<CfgNodeValue<TK, TV>> collection)
         {
             lock (_lock)
             {
-                var keyValuePairs = collection as List<CfgNodeValue<K, V>> ?? collection.ToList();
+                var keyValuePairs = collection as List<CfgNodeValue<TK, TV>> ?? collection.ToList();
                 AllItems.AddRange(keyValuePairs);
                 foreach (var keyVal in keyValuePairs)
                 {
@@ -44,7 +44,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Add(CfgNodeValue<K, V> value)
+        public void Add(CfgNodeValue<TK, TV> value)
         {
             lock (_lock)
             {
@@ -71,9 +71,9 @@ namespace LunaConfigNode
             }
         }
 
-        public void Create(K key, V value)
+        public void Create(TK key, TV value)
         {
-            var newVal = new CfgNodeValue<K, V>(key, value);
+            var newVal = new CfgNodeValue<TK, TV>(key, value);
             lock (_lock)
             {
                 AllItems.Add(newVal);
@@ -84,7 +84,7 @@ namespace LunaConfigNode
                         List.Add(Dictionary[key]);
                         List.Add(newVal);
                         RepeatedKeys.Add(key, 1);
-                        Dictionary.Remove(key);;
+                        Dictionary.Remove(key);
                     }
                     else
                     {
@@ -99,15 +99,15 @@ namespace LunaConfigNode
             }
         }
 
-        public List<CfgNodeValue<K, V>> GetSeveral(K key)
+        public List<CfgNodeValue<TK, TV>> GetSeveral(TK key)
         {
             lock (_lock)
             {
-                return Dictionary.ContainsKey(key) ? new List<CfgNodeValue<K, V>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
+                return Dictionary.ContainsKey(key) ? new List<CfgNodeValue<TK, TV>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
             }
         }
 
-        public CfgNodeValue<K, V> GetSingle(K key)
+        public CfgNodeValue<TK, TV> GetSingle(TK key)
         {
             lock (_lock)
             {
@@ -120,7 +120,7 @@ namespace LunaConfigNode
             }
         }
 
-        public List<CfgNodeValue<K, V>> GetAll()
+        public List<CfgNodeValue<TK, TV>> GetAll()
         {
             lock (_lock)
             {
@@ -128,7 +128,7 @@ namespace LunaConfigNode
             }
         }
 
-        public List<K> GetAllKeys()
+        public List<TK> GetAllKeys()
         {
             lock (_lock)
             {
@@ -136,7 +136,7 @@ namespace LunaConfigNode
             }
         }
 
-        public List<V> GetAllValues()
+        public List<TV> GetAllValues()
         {
             lock (_lock)
             {
@@ -144,7 +144,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Update(K key, V value)
+        public void Update(TK key, TV value)
         {
             lock (_lock)
             {
@@ -162,7 +162,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Remove(K key)
+        public void Remove(TK key)
         {
             lock (_lock)
             {
@@ -179,7 +179,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Remove(K key, V value)
+        public void Remove(TK key, TV value)
         {
             lock (_lock)
             {
@@ -199,7 +199,7 @@ namespace LunaConfigNode
             }
         }
 
-        public void Remove(CfgNodeValue<K, V> value)
+        public void Remove(CfgNodeValue<TK, TV> value)
         {
             lock (_lock)
             {
@@ -210,13 +210,16 @@ namespace LunaConfigNode
                 }
                 else
                 {
-                    RepeatedKeys.Remove(value.Key);
-                    List.RemoveAll(v => v.Equals(value));
+                    var numberRemoved = List.RemoveAll(v => v.Equals(value));
+                    if (RepeatedKeys[value.Key] == numberRemoved)
+                        RepeatedKeys.Remove(value.Key);
+                    else
+                        RepeatedKeys[value.Key] -= numberRemoved;
                 }
             }
         }
 
-        public bool Exists(K key)
+        public bool Exists(TK key)
         {
             lock (_lock)
             {
@@ -224,7 +227,7 @@ namespace LunaConfigNode
             }
         }
 
-        public bool Exists(CfgNodeValue<K, V> value)
+        public bool Exists(CfgNodeValue<TK, TV> value)
         {
             lock (_lock)
             {
@@ -239,7 +242,7 @@ namespace LunaConfigNode
             lock (_lock)
             {
                 if (obj == null) return false;
-                return obj.GetType() == typeof(MixedCollection<K, V>) && Equals((MixedCollection<K, V>)obj);
+                return obj.GetType() == typeof(MixedCollection<TK, TV>) && Equals((MixedCollection<TK, TV>)obj);
             }
         }
 
@@ -256,7 +259,7 @@ namespace LunaConfigNode
         }
 
 
-        protected bool Equals(MixedCollection<K, V> other)
+        protected bool Equals(MixedCollection<TK, TV> other)
         {
             lock (_lock)
             {
@@ -265,7 +268,7 @@ namespace LunaConfigNode
         }
 
 
-        public static bool operator ==(MixedCollection<K, V> lhs, MixedCollection<K, V> rhs)
+        public static bool operator ==(MixedCollection<TK, TV> lhs, MixedCollection<TK, TV> rhs)
         {
             if (ReferenceEquals(lhs, null))
             {
@@ -275,7 +278,7 @@ namespace LunaConfigNode
             return !ReferenceEquals(rhs, null) && lhs.Equals(rhs);
         }
 
-        public static bool operator !=(MixedCollection<K, V> lhs, MixedCollection<K, V> rhs) => !(lhs == rhs);
+        public static bool operator !=(MixedCollection<TK, TV> lhs, MixedCollection<TK, TV> rhs) => !(lhs == rhs);
 
         #endregion
     }
