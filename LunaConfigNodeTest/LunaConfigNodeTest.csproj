@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="ReplaceTests.cs" />
     <Compile Include="XmlConverterTests.cs" />
     <Compile Include="UpdateTests.cs" />
     <Compile Include="GetTests.cs" />

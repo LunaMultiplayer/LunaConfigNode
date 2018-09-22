@@ -24,26 +24,5 @@ namespace LunaConfigNodeTest
 
             Assert.AreEqual("field2NewVal", configNode.GetValues("field2")[0].Value);
         }
-
-        [TestMethod]
-        public void TestUpdateNode()
-        {
-            var configNode = new ConfigNode(Resources.Simple);
-            var newNode = new ConfigNode("Node2", null);
-            configNode.ReplaceNode("Node2", newNode);
-
-            Assert.AreEqual(newNode, configNode.GetNodes("Node2")[0].Value);
-        }
-
-        [TestMethod]
-        public void TestUpdateSeveralNode()
-        {
-            var configNode = new ConfigNode(Resources.Simple);
-            var newNode = new ConfigNode("RepeatedNode3", configNode);
-            configNode.ReplaceNode("RepeatedNode3", newNode);
-
-            Assert.AreEqual(newNode, configNode.GetNodes("RepeatedNode3")[0].Value);
-            Assert.AreEqual(newNode, configNode.GetNodes("RepeatedNode3")[1].Value);
-        }
     }
 }

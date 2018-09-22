@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LunaConfigNode
+namespace LunaConfigNode.CfgNode
 {
     public class CfgNodeValue<T1, T2>
     {

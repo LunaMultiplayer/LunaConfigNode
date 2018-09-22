@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// Removes the nodes that have the given name
+        /// Removes ALL the nodes that have the given name
         /// </summary>
         public void RemoveNode(string name)
         {

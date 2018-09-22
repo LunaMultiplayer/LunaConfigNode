@@ -8,8 +8,8 @@ namespace LunaConfigNode.CfgNode
         public string Name { get; set; } = string.Empty;
         public ConfigNode Parent { get; set; }
 
-        public MixedCollection<string, string> Values { get; } = new MixedCollection<string, string>();
-        public MixedCollection<string, ConfigNode> Nodes { get; } = new MixedCollection<string, ConfigNode>();
+        public MixedCollection<string, string> Values { get; private set; } = new MixedCollection<string, string>();
+        public MixedCollection<string, ConfigNode> Nodes { get; private set; } = new MixedCollection<string, ConfigNode>();
 
         public int Depth => Parent?.Depth + 1 ?? 0;
 
@@ -26,14 +26,16 @@ namespace LunaConfigNode.CfgNode
                 {
                     if (line.Contains(CfgNodeConstants.ValueSeparator))
                     {
-                        currentNode.CreateValue(line.Substring(0, line.IndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal)).Trim(),
-                            line.Substring(line.LastIndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal) + CfgNodeConstants.ValueSeparator.Length).Trim());
+                        currentNode.CreateValue(new CfgNodeValue<string, string>(line.Substring(0, line.IndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal)).Trim(),
+                            line.Substring(line.LastIndexOf(CfgNodeConstants.ValueSeparator, StringComparison.Ordinal) + CfgNodeConstants.ValueSeparator.Length).Trim()));
 
                         continue;
                     }
                     if (line.TrimEnd().Equals(CfgNodeConstants.OpenNodeSymbol))
                     {
-                        currentNode = currentNode.CreateNode(previousLine);
+                        var newNode = new ConfigNode(previousLine, this);
+                        currentNode.AddNode(newNode);
+                        currentNode = newNode;
                         continue;
                     }
                     if (line.TrimEnd().Equals(CfgNodeConstants.CloseNodeSymbol))
@@ -58,9 +60,9 @@ namespace LunaConfigNode.CfgNode
         {
             return Values.IsEmpty() && Nodes.IsEmpty();
         }
-        
-        #region Base overrides
 
+        #region Base overrides
+        
         public override string ToString()
         {
             return CfgNodeWriter.WriteConfigNode(this);

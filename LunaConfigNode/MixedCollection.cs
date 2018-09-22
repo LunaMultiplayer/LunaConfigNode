@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LunaConfigNode.CfgNode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +15,8 @@ namespace LunaConfigNode
         private readonly object _lock = new object();
 
         internal List<CfgNodeValue<TK, TV>> AllItems { get; } = new List<CfgNodeValue<TK, TV>>();
-        internal Dictionary<TK, int> RepeatedKeys { get; } = new Dictionary<TK, int>();
-        internal Dictionary<TK, CfgNodeValue<TK, TV>> Dictionary { get; } = new Dictionary<TK, CfgNodeValue<TK, TV>>();
-        internal List<CfgNodeValue<TK, TV>> List { get; } = new List<CfgNodeValue<TK, TV>>();
+        internal Dictionary<TK, CfgNodeValue<TK, TV>> SingleItems { get; } = new Dictionary<TK, CfgNodeValue<TK, TV>>();
+        internal Dictionary<TK, List<CfgNodeValue<TK, TV>>> RepeatedItems { get; } = new Dictionary<TK, List<CfgNodeValue<TK, TV>>>();
 
         public MixedCollection() { }
 
@@ -28,57 +28,33 @@ namespace LunaConfigNode
             }
         }
 
+        public void Initialize(IEnumerable<CfgNodeValue<TK, TV>> collection)
+        {
+            if (!IsEmpty()) Clear();
+            foreach (var keyVal in collection) Add(keyVal);
+        }
+
         public void Add(CfgNodeValue<TK, TV> value)
         {
             lock (_lock)
             {
                 AllItems.Add(value);
-                if (!RepeatedKeys.ContainsKey(value.Key))
+                if (!RepeatedItems.ContainsKey(value.Key))
                 {
-                    if (Dictionary.ContainsKey(value.Key))
+                    if (SingleItems.ContainsKey(value.Key))
                     {
-                        List.Add(Dictionary[value.Key]);
-                        List.Add(value);
-                        RepeatedKeys.Add(value.Key, 1);
-                        Dictionary.Remove(value.Key);
+                        RepeatedItems.Add(value.Key, new List<CfgNodeValue<TK, TV>> { SingleItems[value.Key] });
+                        SingleItems.Remove(value.Key);
+                        RepeatedItems[value.Key].Add(value);
                     }
                     else
                     {
-                        Dictionary.Add(value.Key, value);
+                        SingleItems.Add(value.Key, value);
                     }
                 }
                 else
                 {
-                    RepeatedKeys[value.Key]++;
-                    List.Add(value);
-                }
-            }
-        }
-
-        public void Create(TK key, TV value)
-        {
-            var newVal = new CfgNodeValue<TK, TV>(key, value);
-            lock (_lock)
-            {
-                AllItems.Add(newVal);
-                if (!RepeatedKeys.ContainsKey(key))
-                {
-                    if (Dictionary.ContainsKey(key))
-                    {
-                        List.Add(Dictionary[key]);
-                        List.Add(newVal);
-                        RepeatedKeys.Add(key, 1);
-                        Dictionary.Remove(key);
-                    }
-                    else
-                    {
-                        Dictionary.Add(key, newVal);
-                    }
-                }
-                else
-                {
-                    RepeatedKeys[key]++;
-                    List.Add(newVal);
+                    RepeatedItems[value.Key].Add(value);
                 }
             }
         }
@@ -87,7 +63,8 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return Dictionary.ContainsKey(key) ? new List<CfgNodeValue<TK, TV>> { Dictionary[key] } : List.Where(k => k.Key.Equals(key)).ToList();
+                return SingleItems.ContainsKey(key) ? new List<CfgNodeValue<TK, TV>> { SingleItems[key] } :
+                    RepeatedItems.ContainsKey(key) ? RepeatedItems[key] : new List<CfgNodeValue<TK, TV>>();
             }
         }
 
@@ -95,9 +72,9 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (!RepeatedKeys.ContainsKey(key))
+                if (!RepeatedItems.ContainsKey(key))
                 {
-                    return Dictionary.ContainsKey(key) ? Dictionary[key] : null;
+                    return SingleItems.ContainsKey(key) ? SingleItems[key] : null;
                 }
 
                 throw new Exception($"Key value: \"{key}\" is not unique");
@@ -124,108 +101,112 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return AllItems.Select(v=> v.Value).ToList();
+                return AllItems.Select(v => v.Value).ToList();
             }
         }
 
         /// <summary>
-        /// Sets a new value for all the elements that matches in KEY
+        /// Sets a new value for a single element that matches in KEY
         /// </summary>
         public void Update(TK key, TV value)
         {
             lock (_lock)
             {
-                if (Dictionary.ContainsKey(key))
+                if (SingleItems.ContainsKey(key))
                 {
-                    Dictionary[key].Value = value;
+                    SingleItems[key].Value = value;
                 }
                 else
                 {
-                    foreach (var keyVal in List.Where(k => k.Key.Equals(key)))
-                    {
-                        keyVal.Value = value;
-                    }
+                    throw new Exception($"Key value: \"{key}\" is not unique. Use Replace()");
                 }
             }
         }
 
         /// <summary>
-        /// Replaces all the elements that match in KEY and VALUE for the new one
+        /// Replaces ALL the elements that match in KEY and VALUE for the new one
         /// </summary>
-        public void Replace(CfgNodeValue<TK, TV> oldValue, CfgNodeValue<TK, TV> newValue)
+        public void Replace(CfgNodeValue<TK, TV> oldKeyVal, CfgNodeValue<TK, TV> newKeyVal)
         {
             lock (_lock)
             {
-                if (Dictionary.ContainsKey(oldValue.Key))
+                var index = AllItems.IndexOf(oldKeyVal);
+                if (index >= 0)
                 {
-                    Dictionary[oldValue.Key] = newValue;
-                }
-                else
-                {
-                    for (var i = 0; i < List.Count; i++)
+                    AllItems[index] = newKeyVal;
+
+                    if (SingleItems.ContainsKey(oldKeyVal.Key))
                     {
-                        if (List[i].Equals(oldValue))
+                        if (oldKeyVal.Key.Equals(newKeyVal.Key))
                         {
-                            List[i] = newValue;
+                            SingleItems[oldKeyVal.Key] = newKeyVal;
+                        }
+                        else
+                        {
+                            SingleItems.Remove(oldKeyVal.Key);
+                            SingleItems.Add(newKeyVal.Key, newKeyVal);
+                        }
+                    }
+                    else
+                    {
+                        if (RepeatedItems.ContainsKey(oldKeyVal.Key))
+                        {
+                            if (oldKeyVal.Key.Equals(newKeyVal.Key))
+                            {
+                                for (var i = 0; i < RepeatedItems[oldKeyVal.Key].Count; i++)
+                                {
+                                    if (RepeatedItems[oldKeyVal.Key][i].Equals(oldKeyVal))
+                                        RepeatedItems[oldKeyVal.Key][i] = newKeyVal;
+                                }
+                            }
+                            else
+                            {
+                                Remove(oldKeyVal);
+                                Add(newKeyVal);
+                            }
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Remove all the elements that have the given key
+        /// </summary>
         public void Remove(TK key)
         {
             lock (_lock)
             {
                 AllItems.RemoveAll(v => v.Key.Equals(key));
-                if (Dictionary.ContainsKey(key))
+                if (SingleItems.ContainsKey(key))
                 {
-                    Dictionary.Remove(key);
+                    SingleItems.Remove(key);
                 }
                 else
                 {
-                    RepeatedKeys.Remove(key);
-                    List.RemoveAll(v => v.Key.Equals(key));
+                    RepeatedItems.Remove(key);
                 }
             }
         }
 
-        public void Remove(TK key, TV value)
+        /// <summary>
+        /// Removes a specific value
+        /// </summary>
+        public void Remove(CfgNodeValue<TK, TV> keyVal)
         {
             lock (_lock)
             {
-                AllItems.RemoveAll(v => v.Value.Equals(value));
-                if (Dictionary.ContainsKey(key))
+                AllItems.RemoveAll(v => v.Value.Equals(keyVal));
+                if (SingleItems.ContainsKey(keyVal.Key))
                 {
-                    Dictionary.Remove(key);
+                    SingleItems.Remove(keyVal.Key);
                 }
-                else
+                else if (RepeatedItems.ContainsKey(keyVal.Key))
                 {
-                    var numberRemoved = List.RemoveAll(v => v.Value.Equals(value));
-                    if (RepeatedKeys[key] == numberRemoved)
-                        RepeatedKeys.Remove(key);
-                    else
-                        RepeatedKeys[key] -= numberRemoved;
-                }
-            }
-        }
+                    RepeatedItems[keyVal.Key].RemoveAll(v => v.Equals(keyVal));
+                    if (!RepeatedItems[keyVal.Key].Any())
+                        RepeatedItems.Remove(keyVal.Key);
 
-        public void Remove(CfgNodeValue<TK, TV> value)
-        {
-            lock (_lock)
-            {
-                AllItems.RemoveAll(v => v.Equals(value));
-                if (Dictionary.ContainsKey(value.Key))
-                {
-                    Dictionary.Remove(value.Key);
-                }
-                else
-                {
-                    var numberRemoved = List.RemoveAll(v => v.Equals(value));
-                    if (RepeatedKeys[value.Key] == numberRemoved)
-                        RepeatedKeys.Remove(value.Key);
-                    else
-                        RepeatedKeys[value.Key] -= numberRemoved;
                 }
             }
         }
@@ -234,15 +215,15 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                return Dictionary.ContainsKey(key) || List.Any(v => v.Key.Equals(key));
+                return SingleItems.ContainsKey(key) || RepeatedItems.ContainsKey(key);
             }
         }
 
-        public bool Exists(CfgNodeValue<TK, TV> value)
+        public bool Exists(CfgNodeValue<TK, TV> keyVal)
         {
             lock (_lock)
             {
-                return Dictionary.ContainsKey(value.Key) || List.Contains(value);
+                return SingleItems.ContainsKey(keyVal.Key) || RepeatedItems.ContainsKey(keyVal.Key) && RepeatedItems[keyVal.Key].Contains(keyVal);
             }
         }
 
@@ -267,32 +248,8 @@ namespace LunaConfigNode
             lock (_lock)
             {
                 AllItems.Clear();
-                Dictionary.Clear();
-                List.Clear();
-                RepeatedKeys.Clear();
-            }
-        }
-
-        public void Initialize(IEnumerable<CfgNodeValue<TK, TV>> collection)
-        {
-            if (!IsEmpty()) Clear();
-
-            var keyValuePairs = collection as List<CfgNodeValue<TK, TV>> ?? collection.ToList();
-            AllItems.AddRange(keyValuePairs);
-            foreach (var keyVal in keyValuePairs)
-            {
-                if (!Dictionary.ContainsKey(keyVal.Key) && !RepeatedKeys.ContainsKey(keyVal.Key))
-                    Dictionary.Add(keyVal.Key, keyVal);
-                else
-                {
-                    if (RepeatedKeys.ContainsKey(keyVal.Key))
-                        RepeatedKeys[keyVal.Key]++;
-                    else
-                        RepeatedKeys.Add(keyVal.Key, 1);
-
-                    Dictionary.Remove(keyVal.Key);
-                    List.Add(keyVal);
-                }
+                SingleItems.Clear();
+                RepeatedItems.Clear();
             }
         }
 
@@ -312,13 +269,11 @@ namespace LunaConfigNode
             unchecked
             {
                 var hashCode = (AllItems != null ? AllItems.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (RepeatedKeys != null ? RepeatedKeys.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Dictionary != null ? Dictionary.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (List != null ? List.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SingleItems != null ? SingleItems.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RepeatedItems != null ? RepeatedItems.GetHashCode() : 0);
                 return hashCode;
             }
         }
-
 
         protected bool Equals(MixedCollection<TK, TV> other)
         {
@@ -327,7 +282,6 @@ namespace LunaConfigNode
                 return AllItems.SequenceEqual(other.AllItems);
             }
         }
-
 
         public static bool operator ==(MixedCollection<TK, TV> lhs, MixedCollection<TK, TV> rhs)
         {

@@ -40,6 +40,8 @@ namespace LunaConfigNodeTest
         public void TestRemoveOneOfSeveralNodes()
         {
             var configNode = new ConfigNode(Resources.Simple);
+            Assert.AreEqual(2, configNode.GetNodes("RepeatedNode3").Count);
+
             var subNode = configNode.GetNodes("RepeatedNode3")[0].Value;
             configNode.RemoveNode(subNode);
 
@@ -47,9 +49,11 @@ namespace LunaConfigNodeTest
         }
 
         [TestMethod]
-        public void TestRemoveAllOfSeveralNodes()
+        public void TestRemoveAllOfClonedNodes()
         {
             var configNode = new ConfigNode(Resources.Simple);
+            Assert.AreEqual(2, configNode.GetNodes("RepeatedNode4").Count);
+
             var subNode = configNode.GetNodes("RepeatedNode4")[0].Value;
             configNode.RemoveNode(subNode);
 
