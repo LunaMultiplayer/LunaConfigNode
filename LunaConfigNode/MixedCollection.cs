@@ -112,11 +112,14 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                if (SingleItems.ContainsKey(key))
+                if (!RepeatedItems.ContainsKey(key))
                 {
-                    SingleItems[key].Value = value;
+                    if (SingleItems.ContainsKey(key))
+                    {
+                        SingleItems[key].Value = value;
+                    }
                 }
-                else
+                else if (RepeatedItems.ContainsKey(key))
                 {
                     throw new Exception($"Key value: \"{key}\" is not unique. Use Replace()");
                 }
