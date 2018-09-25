@@ -31,10 +31,6 @@
 | ---------- | -------- | -------- |
 | **master** |[![AppVeyor](https://img.shields.io/appveyor/ci/gavazquez/lunaconfignode/master.svg?logo=appveyor)](https://ci.appveyor.com/project/gavazquez/lunaconfignode/branch/master) | [![AppVeyor Tests](https://img.shields.io/appveyor/tests/gavazquez/lunaconfignode/master.svg?logo=appveyor)](https://ci.appveyor.com/project/gavazquez/lunaconfignode/branch/master/tests)
 
-<p align="center">
-    <a href="https://ci.appveyor.com/project/gavazquez/lunaconfignode/history"><img src="https://buildstats.info/appveyor/chart/gavazquez/lunaconfignode?buildCount=100" alt="Build history"/></a>
-</p>
-
 ---
 
 <p align="center">
