@@ -1,13 +1,13 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Luna ConfigNode Handler (tests)")]
 [assembly: AssemblyDescription("Luna ConfigNode Handler (tests)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LunaConfigNodeTest")]
+[assembly: AssemblyCompany("Gabriel Vazquez")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
-[assembly: AssemblyTrademark("Gabriel Vazquez")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
