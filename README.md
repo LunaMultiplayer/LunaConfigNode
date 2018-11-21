@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.nuget.org/packages/LunaConfigNode"><img src="https://img.shields.io/nuget/v/LunaConfigNode.svg?style=flat&logo=nuget" alt="Nuget" /></a>
+  <a href="https://www.nuget.org/packages/LunaConfigNode"><img src="https://img.shields.io/nuget/v/LunaConfigNode.svg?style=flat&logo=nuget&logoColor=white" alt="Nuget" /></a>
   <a href="../../releases"><img src="https://img.shields.io/github/release/lunamultiplayer/lunaconfignode.svg?style=flat&logo=github&logoColor=white" alt="Latest release" /></a>
   <a href="../../releases"><img src="https://img.shields.io/github/downloads/lunamultiplayer/lunaconfignode/total.svg?style=flat&logo=github&logoColor=white" alt="Total downloads" /></a>
   <a href="../../"><img src="https://img.shields.io/github/search/lunamultiplayer/lunaconfignode/goto.svg?style=flat&logo=github&logoColor=white" alt="Total hits" /></a>
