@@ -1,12 +1,14 @@
 ﻿using LunaConfigNode.CfgNode;
 using LunaConfigNodeTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace LunaConfigNodeTest
 {
     [TestClass]
     public class RemoveTests
     {
+
         [TestMethod]
         public void TestRemoveValueRoot()
         {
@@ -34,6 +36,21 @@ namespace LunaConfigNodeTest
             configNode.RemoveNode(subNode);
 
             Assert.AreEqual(0, configNode.GetNodes("Node1").Count);
+        }
+
+        [TestMethod]
+        public void TestRemoveOneParentNodeAndSerialize()
+        {
+            var root = new ConfigNode("root");
+            root.AddNode(new ConfigNode("X", root));
+            root.AddNode(new ConfigNode("Y", root));
+
+            var before = root.ToString();
+            var xNode = root.GetAllNodes()[0];
+            root.RemoveNode(xNode); //grab the X node by reference
+            var after = root.ToString();
+
+            Assert.AreNotEqual(before, after);
         }
 
         [TestMethod]

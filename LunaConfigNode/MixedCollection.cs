@@ -199,7 +199,7 @@ namespace LunaConfigNode
         {
             lock (_lock)
             {
-                AllItems.RemoveAll(v => v.Value.Equals(keyVal));
+                AllItems.RemoveAll(v => v.Equals(keyVal));
                 if (SingleItems.ContainsKey(keyVal.Key))
                 {
                     SingleItems.Remove(keyVal.Key);
