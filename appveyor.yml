@@ -23,7 +23,7 @@ image: Visual Studio 2017
 #---------------------------------#
 
 environment:
-  smallversion: 1.8
+  smallversion: 1.9
   NugetKey:
     secure: vfUqq6W897iPKi8Ebhv6TPmXZBpB66HH+0amHTXvkxNelQeVsik94KfCnfm3iJCd
 cache:
@@ -73,7 +73,7 @@ deploy:
    description: 'Build $(appveyor_build_version)'
    artifact: LunaConfigNode-$(configuration).zip
    auth_token:
-    secure: cWdElZ0dY+JI561mo0WYuq+/rQ2rqYddc5lMUKJu1I+I8SylbnOykLR95GzrfJFhbcQtiUgKbn03Z9XeYKIycASrWJjx5IjkNUr37TGRQzI3QH1iT0TAmdjs21xoHofy
+    secure: cWdElZ0dY+JI561mo0WYul5R/qpvjaQ+z7pXDd3Trc4wjg9xK/hpgeebrfy2ryXrVPJZvdksRx+SQezyz1XJfhQoZkhamtpGGlAcj3s5bTcCZ+apuyfyCSS+nYg6Htyk
    draft: false
    force_update: true
    on:
