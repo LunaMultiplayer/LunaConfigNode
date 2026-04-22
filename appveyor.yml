@@ -25,7 +25,7 @@ image: Visual Studio 2017
 environment:
   smallversion: 1.8
   NugetKey:
-    secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
+    secure: vfUqq6W897iPKi8Ebhv6TPmXZBpB66HH+0amHTXvkxNelQeVsik94KfCnfm3iJCd
 cache:
   - packages -> **\packages.config
 assembly_info:
@@ -73,7 +73,7 @@ deploy:
    description: 'Build $(appveyor_build_version)'
    artifact: LunaConfigNode-$(configuration).zip
    auth_token:
-    secure: zWJqDvz3LjR2J358JIJKICwghW/DWRzs73KWb3KApTLOreA4c8DN1tos+O3qBMR7
+    secure: cWdElZ0dY+JI561mo0WYuq+/rQ2rqYddc5lMUKJu1I+I8SylbnOykLR95GzrfJFhbcQtiUgKbn03Z9XeYKIycASrWJjx5IjkNUr37TGRQzI3QH1iT0TAmdjs21xoHofy
    draft: false
    force_update: true
    on:
@@ -82,7 +82,7 @@ deploy:
  - provider: NuGet
    server: #NuGet.org
    api_key:
-    secure: tYPzvkyTyLs55bvneeVzag8tp+r3qjFlRbLcllo4g/g96oMBBxhd+p3wzxZHUvgk
+    secure: vfUqq6W897iPKi8Ebhv6TPmXZBpB66HH+0amHTXvkxNelQeVsik94KfCnfm3iJCd
    skip_symbols: false
    symbol_server: #SymbolSource.org
    artifact: /.*\.nupkg/
